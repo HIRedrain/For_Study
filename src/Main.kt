@@ -1,17 +1,21 @@
+/*
+* For_Study - Main
+* 자동화 테스트 도입 중
+*
+* 최초 작성 일자 : 2025.07.04
+*
+* ========================================================
+* 프로그램 수정 / 보완 이력
+* ========================================================
+* 날짜        수정 / 보완 내용
+* ========================================================
+* 2025.07.04  최초 작성 : 옹알이
+* 2025.07.05  자동화 테스트 도입 => 옹알이 테스트 제거
+* ========================================================
+*/
 
 import coding_test.Lv0
 
 fun main() {
-    println("Hello World!")
-
-    // 선언
-    val lv0: Lv0 = Lv0()
-
-
-    // Lv0 - 옹알이
-    //
-    val babbling1: Array<String> = arrayOf("aya", "yee", "u", "maa", "wyeoo")
-    val babbling2: Array<String> = arrayOf("ayaye", "uuuma", "ye", "yemawoo", "ayaa", "Aya")
-    println("lv0.babbling(babbling1) : " + lv0.babbling(babbling1))
-    println("lv0.babbling(babbling2) : " + lv0.babbling(babbling1))
+    println("Hello World! Hi Redrain!")
 }
