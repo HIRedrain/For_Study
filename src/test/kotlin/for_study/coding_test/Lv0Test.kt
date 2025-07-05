@@ -29,6 +29,7 @@ class Lv0Test {
         val babbling1: Array<String> = arrayOf("aya", "yee", "u", "maa", "wyeoo")
         val babbling2: Array<String> = arrayOf("ayaye", "uuuma", "ye", "yemawoo", "ayaa", "Aya")
 
+        // 예상 값 (정답)
         val expected1: Int = 1
         val expected2: Int = 3
 
