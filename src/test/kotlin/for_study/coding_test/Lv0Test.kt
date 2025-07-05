@@ -14,10 +14,10 @@
 
 package for_study.coding_test
 
-import coding_test.Lv0
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
-import kotlin.test.Test
+import org.junit.jupiter.api.Test
+//import kotlin.test.Test
 
 class Lv0Test {
     val lv0: Lv0 = Lv0()
@@ -30,14 +30,15 @@ class Lv0Test {
         val babbling2: Array<String> = arrayOf("ayaye", "uuuma", "ye", "yemawoo", "ayaa", "Aya")
 
         val expected1: Int = 1
-        val expected2: Int = 2
+        val expected2: Int = 3
 
         // when ; test 기능 수행
         val result1: Int = lv0.babbling(babbling1)
         val result2: Int = lv0.babbling(babbling2)
 
         // then ; 실제 결과 확인
-        assertEquals(expected1, result2)
+        assertEquals(expected1, result1)
+        assertEquals(expected2, result2)
 
     }
 }
