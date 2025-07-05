@@ -10,10 +10,11 @@
 * ========================================================
 * 2025.07.04  최초 작성 : 옹알이
 * 2025.07.05  옹알이 수정 + 자동화 테스트 도입 중
+* 2025.07.06  babbling() - return 0 => return answer 수정
 * ========================================================
 */
 
-package coding_test
+package for_study.coding_test
 
 class Lv0 {
 
@@ -23,6 +24,8 @@ class Lv0 {
     // 매개변수 : 문자열 배열 babblings
     // Q. 머쓱이 조카가 발음할 수 있는 단어 개수 반환
     fun babbling(babllings: Array<String>): Int {
+        println("\uD83D\uDD25 babbling() - 옹알이 시작")
+
         val baby: Array<String> = arrayOf("aya", "ye", "woo", "ma") // 현재 조카가 발음할 수 있는 것
         var answer: Int = 0
 
@@ -91,6 +94,8 @@ class Lv0 {
 
         }
 
-        return 0;
+        println("babbling() - answer : $answer")
+
+        return answer
     }
 }
