@@ -11,6 +11,7 @@
 * 2025.07.04  최초 작성 : 옹알이
 * 2025.07.05  옹알이 수정 + 자동화 테스트 도입 중
 * 2025.07.06  babbling() - return 0 => return answer 수정
+* 2025.07.07  나선형 행렬 출력
 * ========================================================
 */
 
@@ -98,4 +99,74 @@ class Lv0 {
 
         return answer
     }
+
+
+
+    // 2025.07.07 - spiral
+    // https://school.programmers.co.kr/learn/courses/30/lessons/181832?language=kotlin
+    // 매개변수 : 양의 정수 n (1 <= n <= 30)
+    // n x n 행렬 (배열) - 1 ~ n^2 정수 [0][0]부터 시계 방향 나선형으로 배치 => 해당 이차원 배열 반환
+    fun spiral(n: Int): Array<IntArray> {
+        println("\uD83D\uDD25 spiral() - 나선형 행렬 시작")
+
+        if (n !in 1 .. 30) {
+            // 제약 조건 : 1 <= n <= 30
+            // n 이 0 이거나 30 초과한다 => 빈 배열 반환
+            println("spiral() - 1 <= n <= 31 범위 만족 x")
+
+            return arrayOf()
+        }
+
+        // n x n 2차원 행렬
+//        val answer: Array<IntArray> = arrayOf<IntArray>()
+//        for (i in 0 until n) {
+//            // 2차원 배열 생성
+//            answer[i] = IntArray(n)
+//        }
+        val answer = Array(n) { IntArray(n) }
+        println("spiral() - 2차원 배열 생성 : answer = ${answer.contentDeepToString()}")
+
+        // 접근 방법
+        // 이동 방향 : 우 -> 하 -> 좌 -> 상
+        // answer[r][c] == 0 => 값 입력
+        // answer[r][c] != 0 => 방향 변경
+        val moveRow = arrayOf(0, 1, 0, -1) // 행 이동
+        val moveCol = arrayOf(1, 0, -1, 0) // 열 이동
+
+        var r = 0 // 현재 행
+        var c = 0 // 현재 열
+        var dir = 0 // 현재 방향 (0 : 우, 1 : 하, 2 : 좌, 3 : 상)
+
+        for (i in 1 .. (n * n)) {
+            println("spiral() - r = ${r}, c = ${c}, dir = ${dir}")
+
+            // 행렬 원솟값 저장
+            answer[r][c] = i
+
+            if (i == (n * n)) {
+                // 마지막 값까지 다 넣음 => 반복문 종료
+                break
+            }
+
+            // 다음 위치 계산
+            var nextR = r + moveRow[dir]
+            var nextC = c + moveCol[dir]
+
+            if ((nextR !in 0 until n) || (nextC !in 0 until n) || (answer[nextR][nextC] != 0)) {
+                // r, c index 값 범위 벗어남 or answer[r][c] != 0 => 방향 전환
+                println("spiral() - 방향 전환 : nextR = ${nextR}, nextC = ${nextC}")
+
+                dir = (dir + 1) % 4 // 방향 전환
+            }
+
+            // r, c 갱신
+            r += moveRow[dir]
+            c += moveCol[dir]
+        }
+
+        println("spiral() - answer : ${answer.contentDeepToString()}")
+
+        return answer
+    }
+
 }
