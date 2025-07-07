@@ -38,6 +38,7 @@ class Sorting {
             }
 
             println("selectionSort() - minValue : ${minValue}, minIndex : ${minIndex}")
+
             if (minValue < array[i]) {
                 // minValue 가 array[i] 보다 작다 => 최솟값 => 정렬
                 var temp: Int = array[i] // 임시 저장
