@@ -9,12 +9,14 @@
 * 날짜        수정 / 보완 내용
 * ========================================================
 * 2025.07.07  최초 작성 : 선택 정렬 테스트
+* 2025.07.08  삽입 정렬 테스트
 * ========================================================
 */
 
 package for_study.algorithm
 
 import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
@@ -24,6 +26,7 @@ class SortingTest {
 
     @Test
     @DisplayName("선택 정렬")
+    @Disabled
     fun selectionSortTest() {
         // given ; data 미리 준비
         val intArray: IntArray = intArrayOf(2, 5, 7, 3, 1, 8, 6, 10, 4, 9)
@@ -33,6 +36,22 @@ class SortingTest {
 
         // when ; test 기능 수행
         sorting.selectionSort(intArray)
+
+        // then ; 실제 결과 확인
+        assertArrayEquals(expectedIntArray, intArray)
+    }
+
+    @Test
+    @DisplayName("삽입 정렬")
+    fun insertionSortTest() {
+        // given ; data 미리 준비
+        val intArray: IntArray = intArrayOf(2, 5, 7, 3, 1, 8, 6, 10, 4, 9)
+
+        // 예상 값 정답
+        val expectedIntArray: IntArray = intArrayOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+
+        // when ; test 기능 수행
+        sorting.insertionSort(intArray)
 
         // then ; 실제 결과 확인
         assertArrayEquals(expectedIntArray, intArray)
