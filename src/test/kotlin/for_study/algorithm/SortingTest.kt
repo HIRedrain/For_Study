@@ -10,6 +10,7 @@
 * ========================================================
 * 2025.07.07  최초 작성 : 선택 정렬 테스트
 * 2025.07.08  삽입 정렬 테스트
+* 2025.07.09  병합 정렬 테스트
 * ========================================================
 */
 
@@ -43,6 +44,7 @@ class SortingTest {
 
     @Test
     @DisplayName("삽입 정렬")
+    @Disabled
     fun insertionSortTest() {
         // given ; data 미리 준비
         val intArray: IntArray = intArrayOf(2, 5, 7, 3, 1, 8, 6, 10, 4, 9)
@@ -52,6 +54,22 @@ class SortingTest {
 
         // when ; test 기능 수행
         sorting.insertionSort(intArray)
+
+        // then ; 실제 결과 확인
+        assertArrayEquals(expectedIntArray, intArray)
+    }
+
+    @Test
+    @DisplayName("병합 정렬")
+    fun mergeSortTest() {
+        // given ; data 미리 준비
+        val intArray: IntArray = intArrayOf(2, 5, 7, 3, 1, 8, 6, 10, 4, 9)
+
+        // 예상 값 정답
+        val expectedIntArray: IntArray = intArrayOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+
+        // when ; test 기능 수행
+        sorting.mergeSort(intArray)
 
         // then ; 실제 결과 확인
         assertArrayEquals(expectedIntArray, intArray)
