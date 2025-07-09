@@ -138,19 +138,27 @@ class Sorting {
         println("\uD83D\uDD25 _mergeSort() - 내부 병합 정렬 시작")
 
         if (left >= right) {
+            // 배열의 원소가 하나다? => 할 필요 없음
             return
         }
 
-        var mid = (left + right) / 2
+        var mid = (left + right) / 2 // 소수점 아래 값 버림
+        println("_mergeSort() - left = ${left}, right = ${right}, mid = ${mid}")
+
+        // 재귀 함수 호출
         _mergeSort(array, temp_array, left, mid) // 왼쪽 구간
         _mergeSort(array, temp_array, mid + 1, right) // 오른쪽 구간
 
         // 1. temp_array 에다가 배열 반씩 복사
         for (i in left .. mid) {
+            println("_mergeSort() - left = ${left}, i = ${i}")
+
             temp_array[i] = array[i]
         }
 
         for (i in 1 .. (right - mid)) {
+            println("_mergeSort() - right = ${right}, right - i + 1 = ${right - i + 1}, mid + 1 = ${mid + 1}")
+
             temp_array[right - i + 1] = array[mid + i]
         }
 
@@ -159,10 +167,16 @@ class Sorting {
         var j = right
         var k = left
         while (k <= right) {
+            println("_mergeSort() - i = ${i}, j = ${j}, k = ${k}")
+
             if (temp_array[i] < temp_array[j]) {
+                println("_mergeSort() - temp_array[i] (${temp_array[i]}) < temp_array[j] (${temp_array[j]})")
+
                 array[k] = temp_array[i++]
             }
             else {
+                println("_mergeSort() - temp_array[i] (${temp_array[i]}) > temp_array[j] (${temp_array[j]})")
+
                 array[k] = temp_array[j--]
             }
 
