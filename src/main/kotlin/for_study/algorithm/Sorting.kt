@@ -10,6 +10,7 @@
 * ========================================================
 * 2025.07.07  최초 작성 : 선택 정렬
 * 2025.07.08  삽입 정렬
+* 2025.07.09  병합 정렬
 * ========================================================
 */
 
@@ -21,6 +22,7 @@ class Sorting {
     // 1. 처음부터 끝까지 비교 => 최솟값 제일 앞으로 이동
     // 2. 그다음 것부터 끝까지 비교 => 그중 최솟값 2번째 자리로 이동
     // 3. 위 방식 (n-1)번 반복
+    // n(n-1)  2 번 비교
     fun selectionSort(array: IntArray) {
         println("\uD83D\uDD25 selectionSort() - 선택 정렬 시작")
 
@@ -114,6 +116,60 @@ class Sorting {
         }
 
         println("insertionSort() - Result : ${array.contentToString()}")
+    }
+
+
+    // 병합 정렬 : O(n * log n)
+    // 분할 및 정복 방식의 알고리즘 - 분할 (Divide) & 병합 (Merge)
+    // 분할 : 원소가 2개 내지는 1개 남을 때까지 1/2 분할 진행 후 정렬 처리
+    // 병합 : 정렬된 부분 => 병합 & 정렬
+    // 병합해야 할 부분이 구간별로 정렬 돼 있어 병합 정렬 신속히 처리 가능
+    // 각 병합 단계에서 총 N 개 비교
+    fun mergeSort(array: IntArray) {
+        println("\uD83D\uDD25 mergeSort() - 병합 정렬 시작")
+
+        val temp_arr = array.copyOf() // 깊은 복사 - 별도의 객체로 복사
+        _mergeSort(array, temp_arr, 0, array.size - 1)
+
+        println("mergeSort() - Result : ${array.contentToString()}")
+    }
+
+    fun _mergeSort(array: IntArray, temp_array: IntArray, left: Int, right: Int) {
+        println("\uD83D\uDD25 _mergeSort() - 내부 병합 정렬 시작")
+
+        if (left >= right) {
+            return
+        }
+
+        var mid = (left + right) / 2
+        _mergeSort(array, temp_array, left, mid) // 왼쪽 구간
+        _mergeSort(array, temp_array, mid + 1, right) // 오른쪽 구간
+
+        // 1. temp_array 에다가 배열 반씩 복사
+        for (i in left .. mid) {
+            temp_array[i] = array[i]
+        }
+
+        for (i in 1 .. (right - mid)) {
+            temp_array[right - i + 1] = array[mid + i]
+        }
+
+        // 2. 나눈 것을 다시 병합
+        var i = left
+        var j = right
+        var k = left
+        while (k <= right) {
+            if (temp_array[i] < temp_array[j]) {
+                array[k] = temp_array[i++]
+            }
+            else {
+                array[k] = temp_array[j--]
+            }
+
+            k++
+        }
+
+        println("_mergeSort() - Result : ${array.contentToString()}")
     }
 
 }
