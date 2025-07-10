@@ -12,6 +12,7 @@
 * 2025.07.08  삽입 정렬
 * 2025.07.09  병합 정렬
 * 2025.07.10  퀵 정렬
+* 2025.07.11  배열 생성, 배열 원소 섞는 함수
 * ========================================================
 */
 
@@ -129,13 +130,13 @@ class Sorting {
     fun mergeSort(array: IntArray) {
         println("\uD83D\uDD25 mergeSort() - 병합 정렬 시작")
 
-        val temp_arr = array.copyOf() // 깊은 복사 - 별도의 객체로 복사
-        _mergeSort(array, temp_arr, 0, array.size - 1)
+        val tempArray = array.copyOf() // 깊은 복사 - 별도의 객체로 복사
+        _mergeSort(array, tempArray, 0, array.size - 1)
 
         println("mergeSort() - Result : ${array.contentToString()}")
     }
 
-    fun _mergeSort(array: IntArray, temp_array: IntArray, left: Int, right: Int) {
+    fun _mergeSort(array: IntArray, tempArray: IntArray, left: Int, right: Int) {
         println("\uD83D\uDD25 _mergeSort() - 내부 병합 정렬 시작")
 
         if (left >= right) {
@@ -147,20 +148,20 @@ class Sorting {
         println("_mergeSort() - left = ${left}, right = ${right}, mid = ${mid}")
 
         // 재귀 함수 호출
-        _mergeSort(array, temp_array, left, mid) // 왼쪽 구간
-        _mergeSort(array, temp_array, mid + 1, right) // 오른쪽 구간
+        _mergeSort(array, tempArray, left, mid) // 왼쪽 구간
+        _mergeSort(array, tempArray, mid + 1, right) // 오른쪽 구간
 
         // 1. temp_array 에다가 배열 반씩 복사
         for (i in left .. mid) {
             println("_mergeSort() - left = ${left}, i = ${i}")
 
-            temp_array[i] = array[i]
+            tempArray[i] = array[i]
         }
 
         for (i in 1 .. (right - mid)) {
             println("_mergeSort() - right = ${right}, right - i + 1 = ${right - i + 1}, mid + 1 = ${mid + 1}")
 
-            temp_array[right - i + 1] = array[mid + i]
+            tempArray[right - i + 1] = array[mid + i]
         }
 
         // 2. 나눈 것을 다시 병합
@@ -170,15 +171,15 @@ class Sorting {
         while (k <= right) {
             println("_mergeSort() - i = ${i}, j = ${j}, k = ${k}")
 
-            if (temp_array[i] < temp_array[j]) {
-                println("_mergeSort() - temp_array[i] (${temp_array[i]}) < temp_array[j] (${temp_array[j]})")
+            if (tempArray[i] < tempArray[j]) {
+                println("_mergeSort() - temp_array[i] (${tempArray[i]}) < temp_array[j] (${tempArray[j]})")
 
-                array[k] = temp_array[i++]
+                array[k] = tempArray[i++]
             }
             else {
-                println("_mergeSort() - temp_array[i] (${temp_array[i]}) > temp_array[j] (${temp_array[j]})")
+                println("_mergeSort() - temp_array[i] (${tempArray[i]}) > temp_array[j] (${tempArray[j]})")
 
-                array[k] = temp_array[j--]
+                array[k] = tempArray[j--]
             }
 
             k++
@@ -188,6 +189,132 @@ class Sorting {
     }
 
 
-    // 퀵 정렬
+    // 퀵 정렬 : O(n * log n)
+    // 분할 및 정복 방식의 알고리즘 (Divide and Conquer)
+    // pivot : 탐색 구간의 중간 값
+    // _partition() : pivot 과 다른 원소 비교 & 원소 자리 변경 (swapping)- pivot 보다 작은 원소, 큰 원소 구분 => 집합 분할
+    // => 분할 구간 - 재귀 함수 호출 => 탐색 구간 1/2 줄여
+    // 재귀 함수 호출 시 함수 호출 오버헤드 발생 => 원소가 적은 배열 - 삽입 정렬, 선택 정렬보다 더 오래 걸릴 수 있음
+    // => 성능 저하 : 따라서, 추후 하이브리드 정렬 구현
+    fun quickSort(array: IntArray) {
+        println("\uD83D\uDD25 quickSort() - 퀵 정렬 시작")
+
+        _quickSort(array, 0, array.size - 1)
+
+        println("quickSort() - Result : ${array.contentToString()}")
+    }
+
+    fun _quickSort(array: IntArray, left: Int, right: Int) {
+        println("\uD83D\uDD25 _quickSort() - 내부 퀵 정렬 시작")
+
+        if (left >= right) {
+            // 배열의 원소가 하나다? => 할 필요 없음
+            return
+        }
+
+        var pivotIndex = (left + right) / 2
+        var newPivotIndex = _partition(array, left, right, pivotIndex)
+
+        if (left < (newPivotIndex - 1)) {
+            println("_quickSort() - left (${left}) < newPivotIndex - 1 (${newPivotIndex - 1})")
+
+            _quickSort(array, left, newPivotIndex - 1)
+        }
+
+        if (right > (newPivotIndex + 1)) {
+            println("_quickSort() - right (${right}) > newPivotIndex + 1 (${newPivotIndex + 1})")
+
+            _quickSort(array, newPivotIndex + 1, right)
+        }
+
+        println("_quickSort() - Result : ${array.contentToString()}")
+    }
+
+    fun _partition(array: IntArray, left: Int, right: Int, pivotIndex: Int): Int {
+        println("\uD83D\uDD25 _partition() - 퀵 정렬 시작")
+
+        // array[pivotIndex] <-> array[right]
+        // 최종적으로 pivotValue 값이 array[right] 에 위치함
+        var pivotValue = array[pivotIndex]
+        array[pivotIndex] = array[right]
+        array[right] = pivotValue
+
+        var temp: Int
+        var newPivotIndex = left
+        for (i in left .. (right -1)) {
+            println("_partition() - for : i = $i")
+
+            if (array[i] <= pivotValue) {
+                // pivotValue 보다 원소 값이 작거나 같다 => 왼쪽으로 이동
+                println("_partition() - for : array[i] (${array[i]}) <= pivotValue (${pivotValue})")
+
+                // array[i] <-> array[newPivotIndex]
+                // 배열의 왼쪽 구간에 i번째 원소 값 저장
+                temp = array[i]
+                array[i] = array[newPivotIndex]
+                array[newPivotIndex] = temp
+                newPivotIndex++
+            }
+        }
+
+        // array[newPivotIndex] <-> array[right]
+        // array[newPivotIndex] : pivotValue 보다 작거나 같은 원솟값이 끝나는 지점
+        // array[right] : pivotValue 값 저장된 상태
+        // pivotValue 값을 array[newPivotIndex] 위치로 옮김
+        println("_partition() - array[newPivotIndex] (${array[newPivotIndex]}) <-> array[right] (${array[right]})")
+        temp = array[newPivotIndex]
+        array[newPivotIndex] = array[right]
+        array[right] = temp
+
+        println("_partition() - Result : ${array.contentToString()}")
+
+        return newPivotIndex
+    }
+
+
+    // 중복 없는 난수 배열 생성 함수 - 테스트 때 사용할 용도
+    // 배열 원소 섞는 건 별도로 진행하는 걸로 처리 : test 코드에서 예측 값 설정할 때 사용해야 하니까..
+    fun genBigRandIntArray(size: Int, offset: Int): IntArray {
+        println("\uD83D\uDD25 genBigRandIntArray() - 배열 생성 시작")
+
+        // 배열 생성
+        val array = IntArray(size)
+        for (i in 0 until size) {
+            array[i] = i + offset
+        }
+
+        // 원소 자리 바꾸기
+        // shuffleArray(array)
+
+        println("genBigRandIntArray() - Result : ${array.contentToString()}")
+
+        return array
+    }
+
+
+    // 원소 섞는 함수 - 테스트 때 사용할 용도
+    fun shuffleArray(array: IntArray) {
+        println("\uD83D\uDD25 shuffleArray() - 배열 섞기 시작")
+
+        // 원소 섞기
+        for(i in 0 until array.size) {
+            val j = (Math.random() * array.size).toInt()
+            if (j == i) {
+                // i 와 j 가 같으면 원소 자리 바꿀 필요 없으니까
+                continue
+            }
+
+            // array[i] <-> array[j] : 다르면 원소 자리 바꿔야지
+            val temp = array[i]
+            array[i] = array[j]
+            array[j] = temp
+        }
+
+        println("shuffleArray() - Result : ${array.contentToString()}")
+    }
+
+
+
+
 
 }
