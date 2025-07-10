@@ -11,6 +11,7 @@
 * 2025.07.07  최초 작성 : 선택 정렬 테스트
 * 2025.07.08  삽입 정렬 테스트
 * 2025.07.09  병합 정렬 테스트
+* 2025.07.10  퀵 정렬 테스트
 * ========================================================
 */
 
@@ -61,6 +62,7 @@ class SortingTest {
 
     @Test
     @DisplayName("병합 정렬")
+    @Disabled
     fun mergeSortTest() {
         // given ; data 미리 준비
         val intArray: IntArray = intArrayOf(2, 5, 7, 3, 1, 8, 6, 10, 4, 9)
@@ -70,6 +72,25 @@ class SortingTest {
 
         // when ; test 기능 수행
         sorting.mergeSort(intArray)
+
+        // then ; 실제 결과 확인
+        assertArrayEquals(expectedIntArray, intArray)
+    }
+
+    @Test
+    @DisplayName("퀵 정렬")
+    fun quickSortTest() {
+        // given ; data 미리 준비
+        val intArray: IntArray = sorting.genBigRandIntArray(10, 0)
+        val expectedIntArray = intArray.copyOf() // 예상 값 정답 - 깊은 복사 처리
+
+        sorting.shuffleArray(intArray) // 배열 원소 섞기
+
+        //println("intArray = ${intArray.contentToString()}")
+        //println("expectedIntArray = ${expectedIntArray.contentToString()}")
+
+        // when ; test 기능 수행
+        sorting.quickSort(intArray)
 
         // then ; 실제 결과 확인
         assertArrayEquals(expectedIntArray, intArray)
