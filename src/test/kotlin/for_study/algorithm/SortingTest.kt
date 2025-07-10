@@ -95,4 +95,5 @@ class SortingTest {
         // then ; 실제 결과 확인
         assertArrayEquals(expectedIntArray, intArray)
     }
+
 }
