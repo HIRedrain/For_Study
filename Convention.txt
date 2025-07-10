@@ -1,0 +1,17 @@
+:tada:	🎉	init	프로젝트 생성
+:sparkles:	✨	feat	기능 구현 첫 커밋 할 때
+:zap:	⚡	feat	기능 구현 중
+:lipstick:	💄	style	UI 디자인 (프론트엔드)
+:pencil2:	✏️	fix	자잘한 코드 수정
+:bug:	🪲	fix	버그 수정 (코드 수정)
+:art:	🎨	refactor	코드 수정 (기능 수정 없이 이쁘게 최적화)
+:memo:	🗒️	docs	문서 추가 or 수정 (README 수정할 때)
+:fire:	🔥	remove	파일 삭제
+:heavy_plus_sign:	➕	add	build.gradle, pom.xml 에 dependency 추가할 때
+:heavy_minus_sign:	➖	remove	build.gradle, pom.xml 에 dependency 삭제할 때
+:hammer:	🔨	fix	설정 파일 수정
+:white_check_mark:	✅	test	테스트 코드 작성
+:ambulance:	🚑	!HOTFIX	급하게 치명적인 버그를 고쳐야 하는 경우
+:truck:	🚚	rename	파일 혹은 폴더명을 수정하거나 옮기는 작업인 경우
+:bulb:	💡	comment	필요한 주석 추가 및 변경
+:wrench:	🔧	edit	.yml, .properties 파일 변경
