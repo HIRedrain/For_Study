@@ -13,6 +13,7 @@
 * 2025.07.09  병합 정렬
 * 2025.07.10  퀵 정렬
 * 2025.07.11  배열 생성, 배열 원소 섞는 함수
+* 2025.07.11  하이브리드 정렬 (삽입 + 퀵)
 * ========================================================
 */
 
@@ -297,7 +298,7 @@ class Sorting {
         println("\uD83D\uDD25 shuffleArray() - 배열 섞기 시작")
 
         // 원소 섞기
-        for(i in 0 until array.size) {
+        for (i in 0 until array.size) {
             val j = (Math.random() * array.size).toInt()
             if (j == i) {
                 // i 와 j 가 같으면 원소 자리 바꿀 필요 없으니까
@@ -313,6 +314,26 @@ class Sorting {
         println("shuffleArray() - Result : ${array.contentToString()}")
     }
 
+
+    // 하이브리드 정렬
+    // 배열 원소 <= 32 : 삽입 정렬
+    // 배열 원소 > 32 : 퀵 정렬
+    fun hybridSort(array: IntArray) {
+        println("\uD83D\uDD25 hybridSort() - 하이브리드 정렬 시작")
+
+        if (array.size > 32) {
+            // 배열 크기 32보다 큼 : 퀵 정렬
+            println("hybridSort() - array.size (${array.size}) : quickSort()")
+
+            quickSort(array)
+        }
+        else {
+            // 배열 크기 32 이하 : 삽입 정렬0
+            println("hybridSort() - array.size (${array.size}) : insertionSort()")
+
+            insertionSort(array)
+        }
+    }
 
 
 
