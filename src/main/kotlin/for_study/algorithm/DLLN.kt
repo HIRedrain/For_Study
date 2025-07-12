@@ -9,15 +9,16 @@
 * 날짜        수정 / 보완 내용
 * ========================================================
 * 2025.07.11  최초 작성 : 이중 연결 리스트
+* 2025.07.11  함수 이름 수정 (Prev 관련 함수 - N 추가)
 * ========================================================
 */
 
 package for_study.algorithm
 
 class DLLN<T> {
-    var data: T? = null
-    var next: DLLN<T>? = null
-    var prev: DLLN<T>? = null
+    var data: T? = null // 값
+    var next: DLLN<T>? = null // 다음 노드
+    var prev: DLLN<T>? = null // 이전 노드
 
     constructor() { // 기본 생성자
         this.data = null
@@ -47,11 +48,11 @@ class DLLN<T> {
         this.next = next!! // !! : Not-null assertion operator (double bang) - nullable 타입을 강제로 non-null 타입으로 변환 시 사용
     }
 
-    fun getDLLPrev(): DLLN<T>? { // prev 반환
+    fun getDLLNPrev(): DLLN<T>? { // prev 반환
         return this.prev
     }
 
-    fun setDLLPrev(prev: DLLN<T>?) { // prev 설정
+    fun setDLLNPrev(prev: DLLN<T>?) { // prev 설정
         this.prev = prev!!
     }
 
