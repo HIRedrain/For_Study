@@ -8,7 +8,7 @@
 * ========================================================
 * 날짜        수정 / 보완 내용
 * ========================================================
-* 2025.07.11  최초 작성 : 연결 리스트
+* 2025.07.12  최초 작성 : 연결 리스트
 * ========================================================
 */
 
@@ -88,11 +88,11 @@ class LinkedList<T> {
     }
 
     fun getCount(): Int { // count 반환
-        return count
+        return this.count
     }
 
     fun print() { // 연결 리스트 출력 함수
-        if (count == 0) {
+        if (this.count == 0) {
             // 출력할 원소 x
             println("출력할 원소가 없습니다. // DLL is empty.")
 
@@ -103,7 +103,7 @@ class LinkedList<T> {
         print("[")
         while (currentDLLN != this.tail) {
             if (currentDLLN!!.getDLLNData() != null) {
-                if (currentDLLN.getDLLNNext() != null) {
+                if (currentDLLN.getDLLNNext() != tail) {
                     // 마지막 원소 x
                     print("${currentDLLN.getDLLNData()}, ")
                 }
