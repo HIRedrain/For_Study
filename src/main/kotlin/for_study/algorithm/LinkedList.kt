@@ -1,5 +1,5 @@
 /*
-* Algorithm - LinkedList
+* Algorithm - Linked List
 * 알고리즘 - 리스트 공부
 * 최초 작성 일자 : 2025.07.07
 *
