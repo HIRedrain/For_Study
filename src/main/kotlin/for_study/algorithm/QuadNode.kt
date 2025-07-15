@@ -17,5 +17,12 @@
 package for_study.algorithm
 
 class  QuadNode<E : Comparable<E>> {
+    private var entity: E? = null
+    private var level = 0
+    private var up: QuadNode<E>? = null
+    private var down: QuadNode<E>? = null
+    private var next: QuadNode<E>? = null
+    private var prev: QuadNode<E>? = null
+
 
 }
