@@ -7,9 +7,13 @@
 
 ## 📚 목차
 > [🧠 Algorithm](https://github.com/HIRedrain/For_Study/tree/main/src/main/kotlin/for_study/algorithm)
+> 
 > [🎯 Coding Test](https://github.com/HIRedrain/For_Study/tree/main/src/main/kotlin/for_study/coding_test)
+> 
 > [⚙️ Configuration]
+> 
 > [📄 Convention](https://github.com/HIRedrain/For_Study/blob/main/Convention.txt)
+> 
 > [🧪 Test Code](https://github.com/HIRedrain/For_Study/tree/main/src/test/kotlin/for_study)
 
 
