@@ -1,7 +1,4 @@
-# For_Study
-
-
-## 📌 프로젝트 개요
+## 📌 For Study
 > HIRedrain - 공부 정리 프로젝트
 
 
