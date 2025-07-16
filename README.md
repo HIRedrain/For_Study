@@ -1,4 +1,4 @@
-# 📌 For Study
+# 👨‍💻 For Study
 > HIRedrain - 공부 정리 프로젝트
 
 
