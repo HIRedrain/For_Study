@@ -1,7 +1,9 @@
 # For_Study
 
+
 ## 📌 프로젝트 개요
 > HIRedrain - 공부 정리 프로젝트
+
 
 ## 📚 목차
 > [🧠 Algorithm](https://github.com/HIRedrain/For_Study/tree/main/src/main/kotlin/for_study/algorithm)
