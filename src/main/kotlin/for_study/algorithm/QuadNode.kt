@@ -10,6 +10,7 @@
 * 날짜        수정 / 보완 내용
 * ========================================================
 * 2025.07.14  최초 작성 : QuadNode
+* 2025.07.17  마무리 구현
 * ========================================================
 */
 
@@ -24,5 +25,78 @@ class  QuadNode<E : Comparable<E>> {
     private var next: QuadNode<E>? = null
     private var prev: QuadNode<E>? = null
 
+    constructor() { // 기본 생성자
+        this.entity = null
+        this.level = 0
+    }
 
+    constructor(level: Int) {
+        this.entity = null
+        this.level = level
+    }
+
+    constructor(entity: E, level: Int) {
+        this.entity = entity as E
+        this.level = level
+    }
+
+    constructor(entity: Any?, level: Int) {
+        this.entity = entity as E
+        this.level = level
+    }
+
+    override fun toString(): String {
+        var str: String = ""
+        str += if (this.entity == null) "None" else this.entity.toString()
+
+        return str
+    }
+
+    fun getEntity(): E? {
+        return this.entity
+    }
+
+    fun setEntity(entity: E) {
+        this.entity = entity
+    }
+
+    fun getLevel(): Int {
+        return this.level
+    }
+
+    fun setLevel(level: Int) {
+        this.level = level
+    }
+
+    fun getUp(): QuadNode<E>? {
+        return this.up
+    }
+
+    fun setUp(up: QuadNode<E>?) {
+        this.up = up
+    }
+
+    fun getDown(): QuadNode<E>? {
+        return this.down
+    }
+
+    fun setDown(down: QuadNode<E>?) {
+        this.down = down
+    }
+
+    fun getNext(): QuadNode<E>? {
+        return this.next
+    }
+
+    fun setNext(next: QuadNode<E>?) {
+        this.next = next
+    }
+
+    fun getPrev(): QuadNode<E>? {
+        return this.prev
+    }
+
+    fun setPrev(prev: QuadNode<E>?) {
+        this.prev = prev
+    }
 }
