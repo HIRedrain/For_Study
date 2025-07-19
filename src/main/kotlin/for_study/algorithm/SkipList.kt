@@ -27,6 +27,10 @@ class SkipList<E : Comparable<E>> : MutableIterator<E> {
         this.size = 0
     }
 
+    fun isEmpty(): Boolean {
+        return this.size == 0
+    }
+
     fun getName(): String? {
         return this.name
     }
@@ -34,6 +38,58 @@ class SkipList<E : Comparable<E>> : MutableIterator<E> {
     fun setName(name: String) {
         this.name = name
     }
+
+    fun getSize(): Int {
+        return this.size
+    }
+
+    operator fun get(key: E): E? {
+        checkValidity(key) // 유효성 검사
+        val node = findNode(key) // key 에 해당하는 노드 찾기
+
+        // === ; 참조 동등성 - 해당 객체가 같은 주솟값을 가지는가? <=> 존재 자체가 같은 앤가
+        return if (node!!.getEntity()!!.compareTo(key) === 0) node!!.getEntity()!! else null
+    }
+
+    // in 사용 가능하도록 처리
+    operator fun contains(key: E): Boolean {
+        // key 에 해당하는 값이 이 클래스에 존재 => true
+        return this[key] != null
+    }
+
+    protected fun checkValidity(entity: E?) {
+        requireNotNull(entity) {"Key 값은 null 이 될 수 없습니다."} // entity 가 null 일 때 예외 던짐 - IllegalArgumentException
+    }
+
+    protected fun findNode(key: E): QuadNode<E>? {
+        var node = this.head
+        var next: QuadNode<E>? = null
+        var down: QuadNode<E>? = null
+        var nodeKey: E? = null
+        while (true) {
+            next = node!!.getNext()
+            while ((next != null) && (lessThanOrEqual(next.getEntity(), key))) {
+                node = next
+                next = node.getNext()
+            }
+            nodeKey = node!!.getEntity()
+            if ((nodeKey != null) && (nodeKey.compareTo(key) == 0)) {
+                down = node.getDown()
+                node = down ?: break
+            }
+        }
+
+        return node
+    }
+
+    protected fun lessThanOrEqual(a: E?, b: E): Boolean {
+        return a!!.compareTo(b) <= 0
+    }
+
+
+
+
+
 
 
 }
