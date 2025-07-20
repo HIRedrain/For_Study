@@ -16,6 +16,8 @@
 
 package for_study.algorithm
 
+import kotlin.random.Random
+
 class SkipList<E : Comparable<E>> : MutableIterator<E> {
     protected var name: String? = null
     private var head: QuadNode<E>?
@@ -75,7 +77,7 @@ class SkipList<E : Comparable<E>> : MutableIterator<E> {
             nodeKey = node!!.getEntity()
             if ((nodeKey != null) && (nodeKey.compareTo(key) == 0)) {
                 down = node.getDown()
-                node = down ?: break
+                node = down ?: break // down != null => node = down, down == null => break : 아래 레벨 노드 있으면 계속 진행 아니면 그만
             }
         }
 
@@ -86,8 +88,51 @@ class SkipList<E : Comparable<E>> : MutableIterator<E> {
         return a!!.compareTo(b) <= 0
     }
 
+    protected fun insertNext(x: QuadNode<E>?, y: QuadNode<E>?) {
+        y!!.setPrev(x)
+        y!!.setNext(x!!.getNext())
 
+        if (x.getNext() != null) {
+            x.getNext()!!.setPrev(y)
+        }
+        x.setNext(y)
+    }
 
+    protected fun insertAbove(x: QuadNode<E>, y: QuadNode<E>) {
+        x!!.setUp(y)
+        y.setDown(x)
+    }
+
+    override fun hasNext(): Boolean {
+        TODO("아직 구현되지 않은 함수입니다.") // 특수 함수 - 나중에 구현해야 함
+    }
+
+    override fun next(): E {
+        TODO("아직 구현되지 않은 함수입니다.") // 특수 함수 - 나중에 구현해야 함
+    }
+
+    override fun remove() {
+        TODO("아직 구현되지 않은 함수입니다.") // 특수 함수 - 나중에 구현해야 함
+    }
+
+    fun add(key: E) {
+        checkValidity(key)
+
+        var node = findNode(key)
+        if ((node!!.getEntity() != null) && (node.getEntity()!!.compareTo(key) === 0)) {
+            node.setEntity(key)
+
+            return
+        }
+
+        var newNode: QuadNode<E> = QuadNode<E>(key, node.getLevel())
+        insertNext(node, newNode)
+
+        var currentLevel = node.getLevel()
+        var headLevel = this.head!!.getLevel()
+        var rand = Random.Default
+
+    }
 
 
 
