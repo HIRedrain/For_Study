@@ -11,6 +11,7 @@
 * 날짜        수정 / 보완 내용
 * ========================================================
 * 2025.07.18  최초 작성 : SkipList
+* 2025.07.21  SkipList 마무리
 * ========================================================
 */
 
@@ -44,6 +45,74 @@ class SkipList<E : Comparable<E>> : MutableIterator<E> {
     fun getSize(): Int {
         return this.size
     }
+
+    fun add(key: E) {
+        checkValidity(key)
+
+        var node = findNode(key)
+        if ((node!!.getEntity() != null) && (node.getEntity()!!.compareTo(key) === 0)) {
+            node.setEntity(key)
+
+            return
+        }
+
+        var newNode: QuadNode<E> = QuadNode<E>(key, node.getLevel())
+        insertNext(node, newNode)
+
+        var currentLevel = node.getLevel()
+        var headLevel = this.head!!.getLevel()
+        var rand = Random.Default
+        while (rand.nextDouble() < 0.5) {
+            if (currentLevel >= headLevel) {
+                val newHead = QuadNode<E>(headLevel + 1)
+                this.head = newHead
+                headLevel = this.head!!.getLevel()
+            }
+
+            while (node!!.getUp() == null) {
+                node = node.getPrev()
+            }
+
+            node =node.getUp()
+            val temp = QuadNode<E>(key, node!!.getLevel())
+            insertNext(node, temp)
+            insertAbove(newNode, temp)
+            newNode = temp
+            currentLevel++
+        }
+
+        this.size++
+    }
+
+    fun remove(key: E) {
+        checkValidity(key)
+        var node = findNode(key)
+        if ((node == null) || (node.getEntity()!!.compareTo(key) !== 0)) {
+            throw NoSuchElementException("key 에 해당하는 node 가 존재하지 않습니다.")
+        }
+
+        while (node!!.getDown() != null) {
+            node = node.getDown()
+        }
+
+        var prev: QuadNode<E>? = null
+        var next: QuadNode<E>? = null
+        while (node != null) {
+            prev = node.getPrev()
+            next = node.getNext()
+            prev?.setNext(next)
+            next?.setPrev(prev)
+            node = node.getUp()
+        }
+
+        while ((this.head!!.getNext() == null) && (this.head!!.getDown() != null)) {
+            this.head = this.head!!.getDown()
+            this.head!!.setUp(null)
+        }
+
+        this.size--
+    }
+
 
     operator fun get(key: E): E? {
         checkValidity(key) // 유효성 검사
@@ -115,26 +184,40 @@ class SkipList<E : Comparable<E>> : MutableIterator<E> {
         TODO("아직 구현되지 않은 함수입니다.") // 특수 함수 - 나중에 구현해야 함
     }
 
-    fun add(key: E) {
-        checkValidity(key)
+    override fun toString(): String {
+        var str: String = this.name as String
+        str += String.format("(size = %3d) : ", this.size)
 
-        var node = findNode(key)
-        if ((node!!.getEntity() != null) && (node.getEntity()!!.compareTo(key) === 0)) {
-            node.setEntity(key)
-
-            return
+        if (this.size == 0) {
+            str += "Empty"
+            return str
+        }
+        else {
+            str += "[ "
         }
 
-        var newNode: QuadNode<E> = QuadNode<E>(key, node.getLevel())
-        insertNext(node, newNode)
+        var node: QuadNode<E>? = this.head
 
-        var currentLevel = node.getLevel()
-        var headLevel = this.head!!.getLevel()
-        var rand = Random.Default
+        while (node!!.getDown() != null) {
+            node = node.getDown()
+        }
 
+        while (node!!.getPrev() != null) {
+            node = node.getPrev()
+        }
+
+        if (node.getNext() != null) {
+            node = node.getNext()
+        }
+
+        while (node != null) {
+            str += String.format("%3s", node)
+            node = node.getNext()
+        }
+        str += " ]"
+
+        return str
     }
-
-
 
 
 }
