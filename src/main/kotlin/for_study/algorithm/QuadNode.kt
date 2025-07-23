@@ -11,13 +11,14 @@
 * ========================================================
 * 2025.07.14  최초 작성 : QuadNode
 * 2025.07.17  마무리 구현
+* 2025.07.23  클래스 이름 내 공란 한 칸 삭제
 * ========================================================
 */
 
 
 package for_study.algorithm
 
-class  QuadNode<E : Comparable<E>> {
+class QuadNode<E : Comparable<E>> {
     private var entity: E? = null
     private var level = 0
     private var up: QuadNode<E>? = null
