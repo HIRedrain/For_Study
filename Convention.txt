@@ -15,3 +15,6 @@
 :truck:	🚚	rename	파일 혹은 폴더명을 수정하거나 옮기는 작업인 경우
 :bulb:	💡	comment	필요한 주석 추가 및 변경
 :wrench:	🔧	edit	.yml, .properties 파일 변경
+
+:calendar:  📅   schedule    일정 작성 or 수정
+:call_me_hand:  🤙   convention  컨벤션 작성 or 수정
