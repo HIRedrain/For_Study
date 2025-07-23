@@ -11,7 +11,7 @@
 > 
 > [📄 Convention](https://github.com/HIRedrain/For_Study/blob/main/Convention.txt)
 > 
-> 📅 Schedule : 추후 추가 예정
+> [📅 Schedule](https://github.com/HIRedrain/For_Study/tree/main/schedule)
 > 
 > [🧪 Test Code](https://github.com/HIRedrain/For_Study/tree/main/src/test/kotlin/for_study)
 
