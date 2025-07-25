@@ -12,6 +12,7 @@
 * ========================================================
 * 2025.07.18  최초 작성 : SkipList
 * 2025.07.21  SkipList 마무리
+* 2025.07.23  Debugging - add()
 * ========================================================
 */
 
@@ -20,9 +21,15 @@ package for_study.algorithm
 import kotlin.random.Random
 
 class SkipList<E : Comparable<E>> : MutableIterator<E> {
-    protected var name: String? = null
+    private var name: String? = null
     private var head: QuadNode<E>?
     private var size = 0
+
+    constructor() {
+        this.name = null
+        this.head = QuadNode<E> ()
+        this.size = 0
+    }
 
     constructor(name: String?) {
         this.name = name
@@ -61,24 +68,42 @@ class SkipList<E : Comparable<E>> : MutableIterator<E> {
 
         var currentLevel = node.getLevel()
         var headLevel = this.head!!.getLevel()
-        var rand = Random.Default
-        while (rand.nextDouble() < 0.5) {
+        val rand = Random.Default
+        var randomValue = rand.nextDouble()
+        println("SkipList.add() - randomValue : ${randomValue}")
+        while (randomValue < 0.5) {
+            // 0.5 미만일 때 반복문 실행 이유 : "동전을 던져서 앞면이 나오면 한 단계 레벨 올린다" 이런 느낌
+            // 평균적으로 전체 노드 중 일부만 높은 레벨
+            // => 높은 레벨 노드 적게 유지 => 탐색 속도 높 && 데이터 삽입 빠르면서도 효율적으로 균형 잡히도록
+            // if) 기준 0.25 : 레벨 느리게 오름 => 낮은 레벨 多
+            // if) 기준 0.75 : 레벨 빠르게 오름 => 높은 레벨 多
             if (currentLevel >= headLevel) {
                 val newHead = QuadNode<E>(headLevel + 1)
                 this.head = newHead
                 headLevel = this.head!!.getLevel()
             }
 
-            while (node!!.getUp() == null) {
-                node = node.getPrev()
+            while (node?.getUp() == null) {
+                node = node?.getPrev()
+
+                if (node == null) {
+                    break
+                }
             }
 
-            node =node.getUp()
-            val temp = QuadNode<E>(key, node!!.getLevel())
-            insertNext(node, temp)
-            insertAbove(newNode, temp)
-            newNode = temp
-            currentLevel++
+            val upNode = node?.getUp()
+            if (upNode != null) {
+                node =upNode
+                val temp = QuadNode<E>(key, node.getLevel())
+                insertNext(node, temp)
+                insertAbove(newNode, temp)
+                newNode = temp
+                currentLevel++
+            }
+            else {
+                // 더 이상 레벨 업 x
+                break
+            }
         }
 
         this.size++
@@ -128,11 +153,11 @@ class SkipList<E : Comparable<E>> : MutableIterator<E> {
         return this[key] != null
     }
 
-    protected fun checkValidity(entity: E?) {
+    private fun checkValidity(entity: E?) {
         requireNotNull(entity) {"Key 값은 null 이 될 수 없습니다."} // entity 가 null 일 때 예외 던짐 - IllegalArgumentException
     }
 
-    protected fun findNode(key: E): QuadNode<E>? {
+    private fun findNode(key: E): QuadNode<E>? {
         var node = this.head
         var next: QuadNode<E>? = null
         var down: QuadNode<E>? = null
@@ -145,19 +170,21 @@ class SkipList<E : Comparable<E>> : MutableIterator<E> {
             }
             nodeKey = node!!.getEntity()
             if ((nodeKey != null) && (nodeKey.compareTo(key) == 0)) {
-                down = node.getDown()
-                node = down ?: break // down != null => node = down, down == null => break : 아래 레벨 노드 있으면 계속 진행 아니면 그만
+                break
             }
+
+            down = node.getDown()
+            node = down ?: break // down != null => node = down, down == null => break : 아래 레벨 노드 있으면 계속 진행 아니면 그만
         }
 
         return node
     }
 
-    protected fun lessThanOrEqual(a: E?, b: E): Boolean {
+    private fun lessThanOrEqual(a: E?, b: E): Boolean {
         return a!!.compareTo(b) <= 0
     }
 
-    protected fun insertNext(x: QuadNode<E>?, y: QuadNode<E>?) {
+    private fun insertNext(x: QuadNode<E>?, y: QuadNode<E>?) {
         y!!.setPrev(x)
         y!!.setNext(x!!.getNext())
 
@@ -167,7 +194,7 @@ class SkipList<E : Comparable<E>> : MutableIterator<E> {
         x.setNext(y)
     }
 
-    protected fun insertAbove(x: QuadNode<E>, y: QuadNode<E>) {
+    private fun insertAbove(x: QuadNode<E>, y: QuadNode<E>) {
         x!!.setUp(y)
         y.setDown(x)
     }
@@ -185,6 +212,8 @@ class SkipList<E : Comparable<E>> : MutableIterator<E> {
     }
 
     override fun toString(): String {
+        println("\uD83D\uDD25 SkipList.toString() - 출력 형식 처리 시작")
+
         var str: String = this.name as String
         str += String.format("(size = %3d) : ", this.size)
 
@@ -199,18 +228,22 @@ class SkipList<E : Comparable<E>> : MutableIterator<E> {
         var node: QuadNode<E>? = this.head
 
         while (node!!.getDown() != null) {
+            println("SkipList.toString() - while (node!!.getDown() != null)")
             node = node.getDown()
         }
 
         while (node!!.getPrev() != null) {
+            println("SkipList.toString() - while (node!!.getPrev() != null)")
             node = node.getPrev()
         }
 
         if (node.getNext() != null) {
+            println("SkipList.toString() - while (node!!.getNext() != null)")
             node = node.getNext()
         }
 
         while (node != null) {
+            println("SkipList.toString() - while (node != null)")
             str += String.format("%3s", node)
             node = node.getNext()
         }
