@@ -25,6 +25,20 @@ v 영어 수업
 
   2025.7.25
 v Skip List Debugging
+  => 1. findNode() 내 while (true) 에서 break 가 없어서 생긴 문제
+        정확히 말하면, if절 내에 break, 밖에 break 가 있어야 하는데, if절 내부에만 있어서 발생한 무한 반복
+  => 2. Cannot invoke "for_study.algorithm.QuadNode.getUp()" because "node" is null
+        java.lang.NullPointerException: Cannot invoke
+        "for_study.algorithm.QuadNode.getUp()" because "node" is null
+        at for_study.algorithm.SkipList.add(SkipList.kt:93)
+        at
+        for_study.algorithm.SkipListTest.skipListTest(SkipListTest.kt:30)
+        at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+        at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+        at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+        ==> add() 내 while() 문에서 node 가 null 인데, getUp() 수행하니 NPE (Null Pointer Exception) 발생
+
+
 v Coding Test 1문제 이상 풀기
 v 자소서 첨삭
 v SQLD 공부
