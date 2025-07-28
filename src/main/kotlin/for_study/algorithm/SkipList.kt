@@ -13,6 +13,7 @@
 * 2025.07.18  최초 작성 : SkipList
 * 2025.07.21  SkipList 마무리
 * 2025.07.23  Debugging - add()
+* 2025.07.23  Debugging - get()
 * ========================================================
 */
 
@@ -57,7 +58,7 @@ class SkipList<E : Comparable<E>> : MutableIterator<E> {
         checkValidity(key)
 
         var node = findNode(key)
-        if ((node!!.getEntity() != null) && (node.getEntity()!!.compareTo(key) === 0)) {
+        if ((node!!.getEntity() != null) && (node.getEntity()!!.compareTo(key) == 0)) {
             node.setEntity(key)
 
             return
@@ -112,7 +113,15 @@ class SkipList<E : Comparable<E>> : MutableIterator<E> {
     fun remove(key: E) {
         checkValidity(key)
         var node = findNode(key)
-        if ((node == null) || (node.getEntity()!!.compareTo(key) !== 0)) {
+
+        //if ((node == null) || (node.getEntity()!!.compareTo(key) !== 0)) {
+        // !== 참조 동등성 부정 연산자 <=> a !== b : a 와 b 가 서로 다른 객체를 참조하고 있는가?
+        // compareTo() : 두 객체의 값 크기를 비교 => Int 값 반환 (0 : 같음, + : 왼쪽이 더 큼, - : 오른쪽이 더 큼)
+        // => 예시 : "zebra".compareTo("apple") > 0
+        // 고로, node.getEntity()!!.compareTo(key) != 0 가 맞지 않나 하고
+
+        val entity = node?.getEntity()
+        if ((node == null) || (entity == null) || (entity.compareTo(key) != 0)) {
             throw NoSuchElementException("key 에 해당하는 node 가 존재하지 않습니다.")
         }
 
@@ -144,7 +153,21 @@ class SkipList<E : Comparable<E>> : MutableIterator<E> {
         val node = findNode(key) // key 에 해당하는 노드 찾기
 
         // === ; 참조 동등성 - 해당 객체가 같은 주솟값을 가지는가? <=> 존재 자체가 같은 앤가
-        return if (node!!.getEntity()!!.compareTo(key) === 0) node!!.getEntity()!! else null
+        // 여기서 예외 발생 : NullPointerException
+        // node == null 일 때 node!! 로 강제 호출 => NPE 발생
+        // !! : null => 예외 발생
+        //return if (node!!.getEntity()!!.compareTo(key) === 0) node!!.getEntity()!! else null
+        //return if (node!!.getEntity()!!.compareTo(key) == 0) node!!.getEntity()!! else null
+
+
+        if (node != null) {
+            val entity = node.getEntity()
+            if ((entity != null) && (entity.compareTo(key) == 0)) {
+                return entity
+            }
+        }
+
+        return null
     }
 
     // in 사용 가능하도록 처리
