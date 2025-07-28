@@ -51,6 +51,23 @@ v 영어 수업
 
   2025.7.28
  v Skip List Debugging
+  => 3. java.lang.NullPointerException
+        	at for_study.algorithm.SkipList.get(SkipList.kt:147)
+        	at for_study.algorithm.SkipList.contains(SkipList.kt:153)
+        	at for_study.algorithm.SkipListTest.skipListTest(SkipListTest.kt:36)
+        	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+        	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+        	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+        => get() 에서 node == null 일 때 node!!.getEntity()!!.compareTo(key) 실행하면서 발생하는 예외
+  => 4. java.lang.NullPointerException
+        	at for_study.algorithm.SkipList.remove(SkipList.kt:115)
+        	at for_study.algorithm.SkipListTest.skipListTest(SkipListTest.kt:46)
+        	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+        	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+        	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+        => remove() - if ((node == null) || (node.getEntity()!!.compareTo(key) != 0)) 에서 NPE 발생
+        => Test Code - skipList 출력 => SkipList_str(size =   9) : [   T ]
+        => 노드 제대로 연결 안 된 듯
 
  v Coding Test 1문제 이상 풀기
  v 이력서 작성
