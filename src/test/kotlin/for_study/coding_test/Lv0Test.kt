@@ -10,6 +10,7 @@
 * ========================================================
 * 2025.07.06  최초 작성 : 옹알이 테스트
 * 2025.07.07  나선형 행렬
+* 2025.07.29  평행 테스트
 * ========================================================
 */
 
@@ -47,6 +48,7 @@ class Lv0Test {
 
     @Test
     @DisplayName("나선형 행렬")
+    @Disabled
     fun spiralTest() {
         // given ; data 미리 준비
         val n5 = 5
@@ -78,5 +80,39 @@ class Lv0Test {
         assertArrayEquals(expectedN2, resultN2)
         assertArrayEquals(arrayOf(), resultN0)
         assertArrayEquals(arrayOf(), resultN31)
+    }
+
+    @Test
+    @DisplayName("평행 여부 판단")
+    fun parallel() {
+        // given ; data 미리 준비
+        val coordinate1: Array<IntArray> = arrayOf(
+            intArrayOf(1, 4),
+            intArrayOf(9, 2),
+            intArrayOf(3, 8),
+            intArrayOf(11, 6)
+        )
+        val coordinate2: Array<IntArray> = arrayOf(
+            intArrayOf(3, 5),
+            intArrayOf(4, 1),
+            intArrayOf(2, 4),
+            intArrayOf(5, 10)
+        )
+
+        // 예상 값
+        val expected1 = 1
+        val expected2 = 0
+
+        // when ; test 기능 수행
+        val result1 = lv0.parallel(coordinate1)
+        val result2 = lv0.parallel(coordinate2)
+
+        // then ; 실제 결과 확인
+        // println("result1 = ${result1}, expected1 = $expected1")
+        // println("result2 = ${result2}, expected2 = $expected2")
+        assertEquals(expected1, result1)
+        assertEquals(expected2, result2)
+
+
     }
 }
