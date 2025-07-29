@@ -12,6 +12,7 @@
 * 2025.07.05  옹알이 수정 + 자동화 테스트 도입 중
 * 2025.07.06  babbling() - return 0 => return answer 수정
 * 2025.07.07  나선형 행렬 출력
+* 2025.07.29  두 직선 평행 여부 판단 함수
 * ========================================================
 */
 
@@ -168,5 +169,60 @@ class Lv0 {
 
         return answer
     }
+
+
+
+    // 2025.07.29 - parallel
+    // https://school.programmers.co.kr/learn/courses/30/lessons/120875?language=kotlin
+    // 매개변수 : [x1, y1], [x2, y2], [x3, y3], [x4, y4] 좌표 4개
+    // 주어진 좌표를 기준으로 직선 두 개 그었을 때 평행하는 두 직선 존재 1, 아니면 0
+    // 평행 기준 : 기울기 동일, y절편 다름
+    // 제약 조건 1. dots 의 길이 = 4
+    // 제약 조건 2. dots 원소 [x, y] 형태, x, y 는 정수 - 0 <= x, y <= 100
+    // 제약 조건 3. 두 직선이 겹칠 때 (일치할 때) 1 반환
+    // 제약 조건 4. 임의의 두 점을 이은 직선이 x축 또는 y축과 평행한 상황 고려 x
+    // 입출력 예시 1. 점 [1, 4], [3, 8] 을 잇고, 점 [9, 2], [11, 6] 을 이으면 두 선분은 평행합니다.
+    // 입출력 예시 2. 점을 어떻게 연결해도 평행하지 않습니다.
+    fun parallel(dots: Array<IntArray>): Int {
+        println("\uD83D\uDD25 parallel() - 평행 여부 판단 시작")
+
+        println("dots : ${dots.contentDeepToString()}")
+
+        var answer: Int = 0
+
+        val slope01 = ((dots[1][1] - dots[0][1]) / (dots[1][0] - dots[0][0])).toDouble()
+        val slope02 = ((dots[2][1] - dots[0][1]) / (dots[2][0] - dots[0][0])).toDouble()
+        val slope03 = ((dots[3][1] - dots[0][1]) / (dots[3][0] - dots[0][0])).toDouble()
+        val slope12 = ((dots[2][1] - dots[1][1]) / (dots[2][0] - dots[1][0])).toDouble()
+        val slope13 = ((dots[3][1] - dots[1][1]) / (dots[3][0] - dots[1][0])).toDouble()
+        val slope23 = ((dots[3][1] - dots[2][1]) / (dots[3][0] - dots[2][0])).toDouble()
+
+        println("slope01 : ${slope01}, slope02 : ${slope02}, slope03 : ${slope03}, slope12 : ${slope12}, slope13 : ${slope13}, slope23 : $slope23")
+
+        if (slope01 == slope23) {
+            answer = 1
+
+            println("점 [${dots[0][0]}, ${dots[0][1]}], [${dots[1][0]}, ${dots[1][1]}] 을 잇고, 점 [${dots[2][0]}, ${dots[2][1]}], [${dots[3][0]}, ${dots[3][1]}] 을 이은 두 선분은 평행합니다.")
+        }
+
+        if (slope02 == slope13) {
+            answer = 1
+
+            println("점 [${dots[0][0]}, ${dots[0][1]}], [${dots[2][0]}, ${dots[2][1]}] 을 잇고, 점 [${dots[1][0]}, ${dots[1][1]}], [${dots[3][0]}, ${dots[3][1]}] 을 이은 두 선분은 평행합니다.")
+        }
+
+        if (slope03 == slope12) {
+            answer = 1
+
+            println("점 [${dots[0][0]}, ${dots[0][1]}], [${dots[3][0]}, ${dots[3][1]}] 을 잇고, 점 [${dots[1][0]}, ${dots[1][1]}], [${dots[2][0]}, ${dots[2][1]}] 을 이은 두 선분은 평행합니다.")
+        }
+
+        if (answer == 0) {
+            println("어떤 점을 연결해도 평행하지 않습니다.")
+        }
+
+        return answer
+    }
+
 
 }
