@@ -1,0 +1,19 @@
+2025.8.1 ~ 2025.8.31
+
+간략한 일정 정리
+
+
+  2025.8.1
+ v Skip List Debugging
+  => 4. 디버깅 진행 중
+
+ v Coding Test 1문제 이상 풀기
+ v 구인 공고 확인
+ v 프로젝트 공부
+ v SQLD 공부
+ v AWS SAA 공부
+ v OPIC 공부
+ v 영어 단어 암기
+ v 영어 수업
+ v 운동
+
