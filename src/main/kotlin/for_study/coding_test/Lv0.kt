@@ -13,6 +13,7 @@
 * 2025.07.06  babbling() - return 0 => return answer 수정
 * 2025.07.07  나선형 행렬 출력
 * 2025.07.29  두 직선 평행 여부 판단 함수
+* 2025.08.01  겹치는 선분의 길이, parallel() - .toDouble() 처리 변경
 * ========================================================
 */
 
@@ -190,12 +191,12 @@ class Lv0 {
 
         var answer: Int = 0
 
-        val slope01 = ((dots[1][1] - dots[0][1]) / (dots[1][0] - dots[0][0])).toDouble()
-        val slope02 = ((dots[2][1] - dots[0][1]) / (dots[2][0] - dots[0][0])).toDouble()
-        val slope03 = ((dots[3][1] - dots[0][1]) / (dots[3][0] - dots[0][0])).toDouble()
-        val slope12 = ((dots[2][1] - dots[1][1]) / (dots[2][0] - dots[1][0])).toDouble()
-        val slope13 = ((dots[3][1] - dots[1][1]) / (dots[3][0] - dots[1][0])).toDouble()
-        val slope23 = ((dots[3][1] - dots[2][1]) / (dots[3][0] - dots[2][0])).toDouble()
+        val slope01 = (dots[1][1].toDouble() - dots[0][1].toDouble()) / (dots[1][0].toDouble() - dots[0][0].toDouble())
+        val slope02 = (dots[2][1].toDouble() - dots[0][1].toDouble()) / (dots[2][0].toDouble() - dots[0][0].toDouble())
+        val slope03 = (dots[3][1].toDouble() - dots[0][1].toDouble()) / (dots[3][0].toDouble() - dots[0][0].toDouble())
+        val slope12 = (dots[2][1].toDouble() - dots[1][1].toDouble()) / (dots[2][0].toDouble() - dots[1][0].toDouble())
+        val slope13 = (dots[3][1].toDouble() - dots[1][1].toDouble()) / (dots[3][0].toDouble() - dots[1][0].toDouble())
+        val slope23 = (dots[3][1].toDouble() - dots[2][1].toDouble()) / (dots[3][0].toDouble() - dots[2][0].toDouble())
 
         println("slope01 : ${slope01}, slope02 : ${slope02}, slope03 : ${slope03}, slope12 : ${slope12}, slope13 : ${slope13}, slope23 : $slope23")
 
@@ -220,6 +221,66 @@ class Lv0 {
         if (answer == 0) {
             println("어떤 점을 연결해도 평행하지 않습니다.")
         }
+
+        return answer
+    }
+
+
+
+    // 2025.08.01 - MeasureLineLength
+    // https://school.programmers.co.kr/learn/courses/30/lessons/120876?language=kotlin
+    // 겹치는 선분의 길이 측정
+    // 매개변수 : lines - [[start, end], [start, end], [start, end]]
+    // 두 개 이상의 선분이 겹치는 부분의 길이 return
+    // 제약 조건 1. lines 길이 = 3 : "원소 3개"
+    // 제약 조건 2. lines 원소의 길이 = 2
+    // 제약 조거 3. 모든 선분의 길이 >= 1
+    // 제약 조건 4. lines 원소 : [a, b] 형태 (a : start, b : end)
+    // 제약 조건 5. -100 <= a < b <= 100
+    fun MeasureLineLength(lines: Array<IntArray>): Int {
+        println("\uD83D\uDD25 MeasureLineLength() - 겹치는 선분의 길이 측정 시작")
+
+        println("lines : ${lines.contentDeepToString()}")
+
+        var answer: Int = 0
+
+        // 로직 정리
+        // i) x1 > x2 => y1 > y2 > x1 > x2 : 이렇게 되면 겹치는 구간 존재
+        // ii) x1 < x2 => y2 > y1 > x2 > x1
+        // iii) x1 < x2 < y1 < x3 < y2 < y3 : 중복 x 구간 겹침
+        // iv) x1 < x2 < x3 < y2 <= y3, y1 : 중복 o 구간 겹침 (y1, y3 둘 중 누가 더 크든 상관 없음)
+        // 1. x좌표 기준 오름차순 정렬 - 삽입 정렬 : 원소 3개니까 quick 정렬보다 나을 것 같아서
+        // 2. 겹침 구간 측정 - 중복 발생 시 해당 구간 길이 제거 처리
+
+        // x좌표 기준 삽입 정렬
+        for (i in 0 until lines.size) {
+            var minX = lines[i][0]
+            var minIndex = i
+
+            for (j in (i + 1) until lines.size) {
+                if (lines[j][0] < minX) {
+                    minX = lines[j][0]
+                    minIndex = j
+                }
+            }
+
+            if (minX < lines[i][0]) {
+                // minX <-> lines[i][0]
+                // x 값 먼저 변경
+                var temp = lines[i][0]
+                lines[i][0] = minX
+                lines[minIndex][0] = temp
+
+                // y 값 변경
+                temp = lines[i][1]
+                lines[i][1] = lines[minIndex][1]
+                lines[minIndex][1] = temp
+            }
+        }
+
+
+
+
 
         return answer
     }
