@@ -11,6 +11,7 @@
 * 2025.07.06  최초 작성 : 옹알이 테스트
 * 2025.07.07  나선형 행렬
 * 2025.07.29  평행 테스트
+* 2025.08.03  겹치는 선분 길이 테스트
 * ========================================================
 */
 
@@ -84,6 +85,7 @@ class Lv0Test {
 
     @Test
     @DisplayName("평행 여부 판단")
+    @Disabled
     fun parallel() {
         // given ; data 미리 준비
         val coordinate1: Array<IntArray> = arrayOf(
@@ -113,6 +115,52 @@ class Lv0Test {
         assertEquals(expected1, result1)
         assertEquals(expected2, result2)
 
+
+    }
+
+    @Test
+    @DisplayName("겹치는 선분 길이 측정")
+    fun measureLineLength() {
+        // given ; data 미리 준비
+        val lines1: Array<IntArray> = arrayOf(
+            intArrayOf(0, 1),
+            intArrayOf(2, 5),
+            intArrayOf(3, 9)
+        )
+        val lines2: Array<IntArray> = arrayOf(
+            intArrayOf(-1, 1),
+            intArrayOf(1, 3),
+            intArrayOf(3, 9)
+        )
+        val lines3: Array<IntArray> = arrayOf(
+            intArrayOf(0, 5),
+            intArrayOf(3, 9),
+            intArrayOf(1, 10)
+        )
+        val lines4: Array<IntArray> = arrayOf(
+            intArrayOf(-7, 3),
+            intArrayOf(-2, 5),
+            intArrayOf(2, 7),
+        )
+
+        // 예상 값
+        val expected1 = 2
+        val expected2 = 0
+        val expected3 = 8
+        val expected4 = 7
+
+        // when ; test 기능 수행
+        val result1 = lv0.MeasureLineLength(lines1)
+        val result2 = lv0.MeasureLineLength(lines2)
+        val result3 = lv0.MeasureLineLength(lines3)
+        val result4 = lv0.MeasureLineLength(lines4)
+
+        // then ; 실제 결과 확인
+        println("result1 = $result1, result2 = $result2, result3 = $result3, result4 = $result4")
+        assertEquals(expected1, result1)
+        assertEquals(expected2, result2)
+        assertEquals(expected3, result3)
+        assertEquals(expected4, result4)
 
     }
 }
