@@ -14,6 +14,7 @@
 * 2025.07.07  나선형 행렬 출력
 * 2025.07.29  두 직선 평행 여부 판단 함수
 * 2025.08.01  겹치는 선분의 길이, parallel() - .toDouble() 처리 변경
+* 2025.08.02  겹치는 선분의 길이 정리 중
 * ========================================================
 */
 
@@ -244,39 +245,57 @@ class Lv0 {
 
         var answer: Int = 0
 
-        // 로직 정리
-        // i) x1 > x2 => y1 > y2 > x1 > x2 : 이렇게 되면 겹치는 구간 존재
-        // ii) x1 < x2 => y2 > y1 > x2 > x1
-        // iii) x1 < x2 < y1 < x3 < y2 < y3 : 중복 x 구간 겹침
-        // iv) x1 < x2 < x3 < y2 <= y3, y1 : 중복 o 구간 겹침 (y1, y3 둘 중 누가 더 크든 상관 없음)
+        // 로직 정리 - 내 생각 : 근데 이게 반나절 생각해 보니 고려할 게 너무 많음.
+        // 각 선분이 겹친다, 안 겹친다로 이렇게 저렇게 계산해 보면 고려해야 할 상황이 대략 9가지
+        // 이게 과연 좋은 로직인가 생각하게 됨
+        // i)s1 > s2 => e1 > e2 > s1 > s2 : 이렇게 되면 겹치는 구간 존재
+        // ii) s1 < s2 => e2 > e1 > s2 > s1
+        // iii) s1 < s2 < e1 < e3 < s2 < s3 : 중복 x 구간 겹침
+        // iv) s1 < s2 < s3 < s2 <= e3, e1 : 중복 o 구간 겹침 (y1, y3 둘 중 누가 더 크든 상관 없음)
         // 1. x좌표 기준 오름차순 정렬 - 삽입 정렬 : 원소 3개니까 quick 정렬보다 나을 것 같아서
         // 2. 겹침 구간 측정 - 중복 발생 시 해당 구간 길이 제거 처리
 
         // x좌표 기준 삽입 정렬
+//        for (i in 0 until lines.size) {
+//            var minS = lines[i][0]
+//            var minIndex = i
+//
+//            for (j in (i + 1) until lines.size) {
+//                if (lines[j][0] < minS) {
+//                    minS = lines[j][0]
+//                    minIndex = j
+//                }
+//            }
+//
+//            if (minS < lines[i][0]) {
+//                // minS <-> lines[i][0]
+//                // start 값 먼저 변경
+//                var temp = lines[i][0]
+//                lines[i][0] = minS
+//                lines[minIndex][0] = temp
+//
+//                // end 값 변경
+//                temp = lines[i][1]
+//                lines[i][1] = lines[minIndex][1]
+//                lines[minIndex][1] = temp
+//            }
+//        }
+
+
+        // 검색 => 실마리 get : 스위핑 기법 (Sweeping Algorithm) 활용 문제
+        // 참고 자료 : https://blog.naver.com/kks227/220907708368
+        // Copilot - 실마리 : [시작점, 끝점] 좌표 => [시작점, +1], [끝점, -1] 로 처리하여 배열 따로 생성 후 점 기준 오름차순 정렬 => 겹치는 구간 찾아라
+        // => Q. 그렇게 분리하고, 오름차순 정렬하면 각 선분의 시작점, 끝점 정보가 흩어진다. 겹치는 구간을 찾는다 한들 이게 어떤 선분의 시작점이고 끝점인지 모르는데 겹치는 구간을 찾는 게 의미 있나?
+        // => A. 이 방식의 목적은 "전체 구간 속 겹침 영역" 측정이다. "선분 개별 정보"가 아니다. 어떤 선분이 겹쳤는지 궁금하면 개별 정보가 필요하겠지만, 그게 아니라 어떤 구간에서 2개 이상의 선분이 겹쳤고 그 길이가 얼마인지만 따지는 상황이면 몰라도 된다.
+
+
+        // 1. [시작점, 끝점] 분리 작업
+        val points: Array<IntArray> = arrayOf() // 초기화
         for (i in 0 until lines.size) {
-            var minX = lines[i][0]
-            var minIndex = i
-
-            for (j in (i + 1) until lines.size) {
-                if (lines[j][0] < minX) {
-                    minX = lines[j][0]
-                    minIndex = j
-                }
-            }
-
-            if (minX < lines[i][0]) {
-                // minX <-> lines[i][0]
-                // x 값 먼저 변경
-                var temp = lines[i][0]
-                lines[i][0] = minX
-                lines[minIndex][0] = temp
-
-                // y 값 변경
-                temp = lines[i][1]
-                lines[i][1] = lines[minIndex][1]
-                lines[minIndex][1] = temp
-            }
+            points.plus(intArrayOf(lines[i][0], +1)) // 시작점
+            points.plus(intArrayOf(lines[i][1], -1)) // 끝점
         }
+
 
 
 
