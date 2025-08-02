@@ -20,6 +20,8 @@
 
 package for_study.coding_test
 
+import kotlin.math.abs
+
 class Lv0 {
 
     // 2025.07.04 - babbling
@@ -243,8 +245,6 @@ class Lv0 {
 
         println("lines : ${lines.contentDeepToString()}")
 
-        var answer: Int = 0
-
         // 로직 정리 - 내 생각 : 근데 이게 반나절 생각해 보니 고려할 게 너무 많음.
         // 각 선분이 겹친다, 안 겹친다로 이렇게 저렇게 계산해 보면 고려해야 할 상황이 대략 9가지
         // 이게 과연 좋은 로직인가 생각하게 됨
@@ -290,16 +290,69 @@ class Lv0 {
 
 
         // 1. [시작점, 끝점] 분리 작업
-        val points: Array<IntArray> = arrayOf() // 초기화
+        // val points: Array<IntArray> = arrayOf() // 초기화
+        // points.plus(intArrayOf(lines[i][0], +1)) - 이거 불가
+        // Array - plus() : 배열에 원소 삽입해서 새로운 배열을 반환함
+        // => 즉, points = points.plus(intArrayOf(lines[i][0], +1)) 를 진행해야 함
+        // => 근데 앞서 points 를 val 로 선언함 ; 재할당 불가
+        // => 이때 방법 1. points 을 var 로 선언하고 plus() 사용하면서 재할당 실행
+        // => 방법 2. val points: MutableList<IntArray> = mutableListOf<IntArray>() 로 선언 후 add() 사용
+        val points: MutableList<IntArray> = mutableListOf<IntArray>()
         for (i in 0 until lines.size) {
-            points.plus(intArrayOf(lines[i][0], +1)) // 시작점
-            points.plus(intArrayOf(lines[i][1], -1)) // 끝점
+            points.add(intArrayOf(lines[i][0], +1)) // 시작점
+            points.add(intArrayOf(lines[i][1], -1)) // 끝점
         }
+//        println("MeasureLineLength() - 1. [시작점, 끝점] 분리 후 - points = ${points.contentDeepToString()}")
+        println("MeasureLineLength() - 1. [시작점, 끝점] 분리 후 - points = ${points.toTypedArray().contentDeepToString()}")
 
+        // 2. 점 기준 정렬 - 삽입 정렬 사용
+        for (i in 0 until points.size) {
+            var minP = points[i][0]
+            var minIndex = i
 
+            for (j in i + 1 until points.size) {
+                if (points[j][0] < minP) {
+                    minP = points[j][0]
+                    minIndex = j
+                }
+            }
 
+            // if (minP < points[i][0]) {
+            if (minIndex != i) {
+                // points[i] <-> points[minIndex]
+                var temp = points[i][0]
+                points[i][0] = minP
+                points[minIndex][0] = temp
 
+                temp = points[i][1]
+                points[i][1] = points[minIndex][1]
+                points[minIndex][1] = temp
+            }
+        }
+//        println("MeasureLineLength() - 2. 점 기준 정렬 후 - points = ${points.contentDeepToString()}")
+        println("MeasureLineLength() - 2. 점 기준 정렬 후 - points = ${points.toTypedArray().contentDeepToString()}")
 
+        // 3. 겹치는 선분의 길이 측정
+        var answer: Int = 0
+        var count: Int = 0
+        for (i in 0 until points.size) {
+            count += points[i][1]
+
+            if (count > 1) {
+                // count 가 1보다 크다 <=> count >= 2
+                answer = abs(points[i][0] - points[i - 1][0]) // 이때 i = 0 이면 count 가 1 초과할 일 없어서 괜찮음
+
+                // 입출력 예시 고려한 처리 과정 - 해당 선분 관련 정보 찾아서 findLine 에 넣은 후 출력할 때 사용
+                // 이건 조금 더 고민하고 구현해야겠다
+//                val findLine: Array<IntArray> = arrayOf()
+//                for (j in 0 until lines.size) {
+//                    if (lines[j][0] == points[i][0]) {
+//                        findLine.plus(intArrayOf(lines[j][0], lines[j][1]))
+//                    }
+//                }
+            }
+        }
+        println("MeasureLineLength() - 3. 겹치는 선분 길이 측정 - answer = $answer")
 
         return answer
     }
