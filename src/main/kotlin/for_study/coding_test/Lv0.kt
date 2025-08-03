@@ -15,6 +15,7 @@
 * 2025.07.29  두 직선 평행 여부 판단 함수
 * 2025.08.01  겹치는 선분의 길이, parallel() - .toDouble() 처리 변경
 * 2025.08.02  겹치는 선분의 길이 정리 중
+* 2025.08.03  겹치는 선분의 길이 논리적 오류 수정 중 - 새로 구현 중
 * ========================================================
 */
 
@@ -283,7 +284,8 @@ class Lv0 {
 
 
         // 검색 => 실마리 get : 스위핑 기법 (Sweeping Algorithm) 활용 문제
-        // 참고 자료 : https://blog.naver.com/kks227/220907708368
+        // 참고 자료 1 : https://blog.naver.com/kks227/220907708368
+        // 참고 자료 2 : https://byeo.tistory.com/entry/%EC%8A%A4%EC%9C%84%ED%95%91-Sweeping
         // Copilot - 실마리 : [시작점, 끝점] 좌표 => [시작점, +1], [끝점, -1] 로 처리하여 배열 따로 생성 후 점 기준 오름차순 정렬 => 겹치는 구간 찾아라
         // => Q. 그렇게 분리하고, 오름차순 정렬하면 각 선분의 시작점, 끝점 정보가 흩어진다. 겹치는 구간을 찾는다 한들 이게 어떤 선분의 시작점이고 끝점인지 모르는데 겹치는 구간을 찾는 게 의미 있나?
         // => A. 이 방식의 목적은 "전체 구간 속 겹침 영역" 측정이다. "선분 개별 정보"가 아니다. 어떤 선분이 겹쳤는지 궁금하면 개별 정보가 필요하겠지만, 그게 아니라 어떤 구간에서 2개 이상의 선분이 겹쳤고 그 길이가 얼마인지만 따지는 상황이면 몰라도 된다.
@@ -297,50 +299,53 @@ class Lv0 {
         // => 근데 앞서 points 를 val 로 선언함 ; 재할당 불가
         // => 이때 방법 1. points 을 var 로 선언하고 plus() 사용하면서 재할당 실행
         // => 방법 2. val points: MutableList<IntArray> = mutableListOf<IntArray>() 로 선언 후 add() 사용
-        val points: MutableList<IntArray> = mutableListOf<IntArray>()
-        for (i in 0 until lines.size) {
-            points.add(intArrayOf(lines[i][0], +1)) // 시작점
-            points.add(intArrayOf(lines[i][1], -1)) // 끝점
-        }
+//        val points: MutableList<IntArray> = mutableListOf<IntArray>()
+//        for (i in 0 until lines.size) {
+//            points.add(intArrayOf(lines[i][0], +1)) // 시작점
+//            points.add(intArrayOf(lines[i][1], -1)) // 끝점
+//        }
 //        println("MeasureLineLength() - 1. [시작점, 끝점] 분리 후 - points = ${points.contentDeepToString()}")
-        println("MeasureLineLength() - 1. [시작점, 끝점] 분리 후 - points = ${points.toTypedArray().contentDeepToString()}")
+//        println("MeasureLineLength() - 1. [시작점, 끝점] 분리 후 - points = ${points.toTypedArray().contentDeepToString()}")
 
         // 2. 점 기준 정렬 - 삽입 정렬 사용
-        for (i in 0 until points.size) {
-            var minP = points[i][0]
-            var minIndex = i
-
-            for (j in i + 1 until points.size) {
-                if (points[j][0] < minP) {
-                    minP = points[j][0]
-                    minIndex = j
-                }
-            }
-
-            // if (minP < points[i][0]) {
-            if (minIndex != i) {
-                // points[i] <-> points[minIndex]
-                var temp = points[i][0]
-                points[i][0] = minP
-                points[minIndex][0] = temp
-
-                temp = points[i][1]
-                points[i][1] = points[minIndex][1]
-                points[minIndex][1] = temp
-            }
-        }
+//        for (i in 0 until points.size) {
+//            var minP = points[i][0]
+//            var minIndex = i
+//
+//            for (j in i + 1 until points.size) {
+//                if (points[j][0] < minP) {
+//                    minP = points[j][0]
+//                    minIndex = j
+//                }
+//            }
+//
+//            // if (minP < points[i][0]) {
+//            if (minIndex != i) {
+//                // points[i] <-> points[minIndex]
+//                var temp = points[i][0]
+//                points[i][0] = minP
+//                points[minIndex][0] = temp
+//
+//                temp = points[i][1]
+//                points[i][1] = points[minIndex][1]
+//                points[minIndex][1] = temp
+//            }
+//        }
 //        println("MeasureLineLength() - 2. 점 기준 정렬 후 - points = ${points.contentDeepToString()}")
-        println("MeasureLineLength() - 2. 점 기준 정렬 후 - points = ${points.toTypedArray().contentDeepToString()}")
+//        println("MeasureLineLength() - 2. 점 기준 정렬 후 - points = ${points.toTypedArray().contentDeepToString()}")
 
         // 3. 겹치는 선분의 길이 측정
-        var answer: Int = 0
-        var count: Int = 0
-        for (i in 0 until points.size) {
-            count += points[i][1]
-
-            if (count > 1) {
+//        var answer: Int = 0
+//        var count: Int = 0
+//        for (i in 0 until points.size) {
+//            count += points[i][1]
+//
+//            if (count > 1) {
                 // count 가 1보다 크다 <=> count >= 2
-                answer = abs(points[i][0] - points[i - 1][0]) // 이때 i = 0 이면 count 가 1 초과할 일 없어서 괜찮음
+                // answer = abs(points[i][0] - points[i - 1][0]) // 이때 i = 0 이면 count 가 1 초과할 일 없어서 괜찮음
+                // 이게 아닌 듯...????
+                // 내가 생각했던 건 켭치는 게 2 이상일 때 값을 계산해서 하는 건가 했는데
+                // 겹치는 게 2 이상이었다가 1로 떨어지는 순간에 계산해야 길이 측정되는 듯..?
 
                 // 입출력 예시 고려한 처리 과정 - 해당 선분 관련 정보 찾아서 findLine 에 넣은 후 출력할 때 사용
                 // 이건 조금 더 고민하고 구현해야겠다
@@ -350,9 +355,65 @@ class Lv0 {
 //                        findLine.plus(intArrayOf(lines[j][0], lines[j][1]))
 //                    }
 //                }
+//            }
+//        }
+//        println("MeasureLineLength() - 3. 겹치는 선분 길이 측정 - answer = $answer")
+
+
+
+        // 참고 자료 2 기반으로 새로 구현
+        // 1. 시작점 기준 lines 삽입 정렬
+        for (i in 0 until lines.size) {
+            var minS = lines[i][0]
+            var minIndex = i
+
+            for (j in (i + 1) until lines.size) {
+                if (lines[j][0] < minS) {
+                    minS = lines[j][0]
+                    minIndex = j
+                }
+            }
+
+            if (minS < lines[i][0]) {
+                // minS <-> lines[i][0]
+                // start 값 먼저 변경
+                var temp = lines[i][0]
+                lines[i][0] = minS
+                lines[minIndex][0] = temp
+
+                // end 값 변경
+                temp = lines[i][1]
+                lines[i][1] = lines[minIndex][1]
+                lines[minIndex][1] = temp
             }
         }
-        println("MeasureLineLength() - 3. 겹치는 선분 길이 측정 - answer = $answer")
+        println("MeasureLineLength() - 1. 시작점 기준 정렬 - lines = ${lines.contentDeepToString()}")
+
+        // 2. 스위핑 기법 (Sweeping) 활용
+        var answer: Int = 0
+        var start: Int = Int.MIN_VALUE
+        var end: Int = Int.MIN_VALUE
+        for (i in 0 until lines.size) {
+            if (lines[i][1] > end) {
+                // 완전 새로운 선분
+                start = lines[i][0]
+                end = lines[i][1]
+            }
+            else if ((lines[i][0] <= end) && (lines[i][1] > end)) {
+                // 일부 겹치는 선분
+                println("[${lines[i][0]}, ${end}] 에서 겹치는 구간이 발생합니다.")
+                answer += (end - lines[i][0])
+
+            }
+        }
+
+
+
+
+
+
+
+
 
         return answer
     }
