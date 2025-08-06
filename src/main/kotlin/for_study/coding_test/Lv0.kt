@@ -391,10 +391,10 @@ class Lv0 {
 
         // 2. 스위핑 기법 (Sweeping) 활용
         var answer: Int = 0
-        var start: Int = Int.MIN_VALUE
-        var end: Int = Int.MIN_VALUE
+        var start: Int = Int.MIN_VALUE; var end: Int = Int.MIN_VALUE
+        var nowStart: Int = Int.MIN_VALUE; var nowEnd: Int = Int.MIN_VALUE
         for (i in 0 until lines.size) {
-            if (lines[i][1] > end) {
+            if (lines[i][0] > end) {
                 // 완전 새로운 선분
                 start = lines[i][0]
                 end = lines[i][1]
@@ -405,7 +405,17 @@ class Lv0 {
                 answer += (end - lines[i][0])
 
             }
+            else if (lines[i][1] <= end) {
+                // 완전 겹침
+
+            }
         }
+
+        // 3.
+
+
+
+
 
 
 
