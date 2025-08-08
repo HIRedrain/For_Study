@@ -16,6 +16,7 @@
 * 2025.08.01  겹치는 선분의 길이, parallel() - .toDouble() 처리 변경
 * 2025.08.02  겹치는 선분의 길이 정리 중
 * 2025.08.03  겹치는 선분의 길이 논리적 오류 수정 중 - 새로 구현 중
+* 2025.08.08  겹치는 선분의 길이 Debugging 완료
 * ========================================================
 */
 
@@ -402,12 +403,22 @@ class Lv0 {
             }
             else if ((lines[i][0] <= end) && (lines[i][1] > end)) {
                 // 일부 겹치는 선분
+                if ((nowStart <= lines[i][0]) && (nowEnd > lines[i][0])) {
+                    // 첫 번째 선분과 두 번째 선분의 겹치는 구간에 세 번째 구간의 일부가 겹치면서, 나머지가 두 번째 선분에 겹칠 때
+                    nowStart = nowEnd
+                    nowEnd = end
+                    end = lines[i][1]
+                    answer += (nowEnd - nowStart)
+
+                    continue
+                }
+
                 nowStart = lines[i][0]
                 nowEnd = end
                 end = lines[i][1]
-                answer += (end - lines[i][0])
+                answer += (nowEnd - nowStart)
 
-                println("[${start}, ${nowEnd}] 에서 겹치는 구간이 발생합니다.")
+                println("[${nowStart}, ${nowEnd}] 에서 겹치는 구간이 발생합니다.")
 
             }
             else if (lines[i][1] <= end) {
@@ -418,13 +429,30 @@ class Lv0 {
                     // 이때 상황을 고려해 보면 3번째 선분 판단 시점
                     println("첫 번째 ([${lines[i - 2][0]}, ${lines[i - 2][1]}]), 두 번째 ([${lines[i - 1][0]}, ${lines[i - 1][1]}]), 세 번째 ([${lines[i][0]}, ${lines[i][1]}]) 선분이 [${lines[i][0]}, ${lines[i][1]}] 구간에서 겹칩니다.")
                 }
+                else if (((nowStart <= lines[i][0]) && (nowEnd <= lines[i][1])) && (nowStart != Int.MIN_VALUE) && (nowEnd != Int.MIN_VALUE)) {
+//                    if ((nowStart == Int.MIN_VALUE) || (nowEnd == Int.MIN_VALUE)) {
+//                        // 첫 번째 선분 안에 두 번째 선분 포함일 때 - now Start re
+//                        nowStart = lines[i][0]
+//                        nowEnd = lines[i][1]
+//
+//                        answer += (nowEnd - nowStart)
+//                    }
+//                    else {
+//                        // 첫 번째, 두 번째 선분의 일부가 겹치고 세 번째 선분이 두 번째 선분에 완전히 포함됨
+//                        answer += (lines[i][1] - nowEnd)
+//                    }
+
+                    // 첫 번째, 두 번째 선분의 일부가 겹치고 세 번째 선분이 두 번째 선분에 완전히 포함됨
+                    answer += (lines[i][1] - nowEnd)
+                    println("선분이 [${lines[i][0]}, ${lines[i][1]}] 구간에서 겹칩니다.")
+                }
                 else {
                     // 처음으로 완전히 겹치는 구간 발생 - 상황 고려하면 2번째 선분 판단 시점 or 3번째 선분 판단 시점
                     // 2번째 선분 판단 시점 : i == 1 // (start < lines[1][0]) && (end >= lines[1][1])
                     // 3번째 선분 판단 시점 : i == 2 // (
                     nowStart = lines[i][0]
                     nowEnd = lines[i][1]
-                    answer += nowEnd - nowStart
+                    answer += (nowEnd - nowStart)
 //                    println("첫 번째 ([${lines[i - 1][0]}, ${lines[i - 1][1]}]), 두 번째 ([${lines[i][0]}, ${lines[i][1]}]) 선분이 [${lines[i][0]}, ${lines[i][1]}] 구간에서 겹칩니다.")
                     println("선분이 [${nowStart}, ${nowEnd}] 구간에서 겹칩니다.")
                 }
@@ -433,6 +461,7 @@ class Lv0 {
         }
 
         // 3. answer 반환
+        println("MeasureLineLength() - answer = $answer")
         return answer
     }
 
