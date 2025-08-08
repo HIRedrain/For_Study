@@ -391,40 +391,48 @@ class Lv0 {
 
         // 2. 스위핑 기법 (Sweeping) 활용
         var answer: Int = 0
-        var start: Int = Int.MIN_VALUE; var end: Int = Int.MIN_VALUE
-        var nowStart: Int = Int.MIN_VALUE; var nowEnd: Int = Int.MIN_VALUE
+        var start: Int = Int.MIN_VALUE; var end: Int = Int.MIN_VALUE // 선분 시작 끝
+        var nowStart: Int = Int.MIN_VALUE; var nowEnd: Int = Int.MIN_VALUE // 겹침 선분 시작 끝
         for (i in 0 until lines.size) {
             if (lines[i][0] > end) {
                 // 완전 새로운 선분
+                // 좌표 기준으로 오름차순 정렬 했음 => 두 번째 이후부터 새로운 선문이 나온다? 그러면 그 직전에 있던 선분과는 겹칠 수 없음
                 start = lines[i][0]
                 end = lines[i][1]
             }
             else if ((lines[i][0] <= end) && (lines[i][1] > end)) {
                 // 일부 겹치는 선분
-                println("[${lines[i][0]}, ${end}] 에서 겹치는 구간이 발생합니다.")
+                nowStart = lines[i][0]
+                nowEnd = end
+                end = lines[i][1]
                 answer += (end - lines[i][0])
+
+                println("[${start}, ${nowEnd}] 에서 겹치는 구간이 발생합니다.")
 
             }
             else if (lines[i][1] <= end) {
                 // 완전 겹침
+                // [start, end] 와 [nowStart, nowEnd] 로 처리
+                if ((nowStart <= lines[i][0]) && (lines[i][1] <= nowEnd)) {
+                    // 기존 겹친 구간에 포함됨 => 구간 계산 필요 x
+                    // 이때 상황을 고려해 보면 3번째 선분 판단 시점
+                    println("첫 번째 ([${lines[i - 2][0]}, ${lines[i - 2][1]}]), 두 번째 ([${lines[i - 1][0]}, ${lines[i - 1][1]}]), 세 번째 ([${lines[i][0]}, ${lines[i][1]}]) 선분이 [${lines[i][0]}, ${lines[i][1]}] 구간에서 겹칩니다.")
+                }
+                else {
+                    // 처음으로 완전히 겹치는 구간 발생 - 상황 고려하면 2번째 선분 판단 시점 or 3번째 선분 판단 시점
+                    // 2번째 선분 판단 시점 : i == 1 // (start < lines[1][0]) && (end >= lines[1][1])
+                    // 3번째 선분 판단 시점 : i == 2 // (
+                    nowStart = lines[i][0]
+                    nowEnd = lines[i][1]
+                    answer += nowEnd - nowStart
+//                    println("첫 번째 ([${lines[i - 1][0]}, ${lines[i - 1][1]}]), 두 번째 ([${lines[i][0]}, ${lines[i][1]}]) 선분이 [${lines[i][0]}, ${lines[i][1]}] 구간에서 겹칩니다.")
+                    println("선분이 [${nowStart}, ${nowEnd}] 구간에서 겹칩니다.")
+                }
 
             }
         }
 
-        // 3.
-
-
-
-
-
-
-
-
-
-
-
-
-
+        // 3. answer 반환
         return answer
     }
 
