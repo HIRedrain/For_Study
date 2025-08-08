@@ -12,6 +12,7 @@
 * 2025.07.07  나선형 행렬
 * 2025.07.29  평행 테스트
 * 2025.08.03  겹치는 선분 길이 테스트
+* 2025.08.08  겹치는 선분 길이 테스트 데이터 추가 작성
 * ========================================================
 */
 
@@ -142,25 +143,66 @@ class Lv0Test {
             intArrayOf(-2, 5),
             intArrayOf(2, 7),
         )
+        val lines5: Array<IntArray> = arrayOf(
+            intArrayOf(5, 8),
+            intArrayOf(2, 6),
+            intArrayOf(1, 4)
+        )
+        val lines6: Array<IntArray> = arrayOf(
+            intArrayOf(0, 2),
+            intArrayOf(4, 6),
+            intArrayOf(2, 4)
+        )
+        val lines7: Array<IntArray> = arrayOf(
+            intArrayOf(0, 10),
+            intArrayOf(4, 6),
+            intArrayOf(2, 8)
+        )
+        val lines8: Array<IntArray> = arrayOf(
+            intArrayOf(1, 5),
+            intArrayOf(3, 7),
+            intArrayOf(2, 6)
+        )
+        val lines9: Array<IntArray> = arrayOf(
+            intArrayOf(0, 100),
+            intArrayOf(75, 125),
+            intArrayOf(50, 150)
+        ) // 제약 조건에 따라 있을 수 없는 일이지만, 확인용으로 추가함.
 
         // 예상 값
         val expected1 = 2
         val expected2 = 0
         val expected3 = 8
         val expected4 = 7
+        val expected5 = 3
+        val expected6 = 0
+        val expected7 = 6
+        val expected8 = 4
+        val expected9 = 75
 
         // when ; test 기능 수행
         val result1 = lv0.MeasureLineLength(lines1)
         val result2 = lv0.MeasureLineLength(lines2)
         val result3 = lv0.MeasureLineLength(lines3)
         val result4 = lv0.MeasureLineLength(lines4)
+        val result5 = lv0.MeasureLineLength(lines5)
+        val result6 = lv0.MeasureLineLength(lines6)
+        val result7 = lv0.MeasureLineLength(lines7)
+        val result8 = lv0.MeasureLineLength(lines8)
+        val result9 = lv0.MeasureLineLength(lines9)
 
         // then ; 실제 결과 확인
         println("result1 = $result1, result2 = $result2, result3 = $result3, result4 = $result4")
+        println("result5 = $result5, result6 = $result6, result7 = $result7, result8 = $result8. result9 = $result9")
         assertEquals(expected1, result1)
         assertEquals(expected2, result2)
         assertEquals(expected3, result3)
         assertEquals(expected4, result4)
+        assertEquals(expected5, result5)
+        assertEquals(expected6, result6)
+        assertEquals(expected7, result7)
+        assertEquals(expected8, result8)
+        assertEquals(expected9, result9)
 
     }
 }
