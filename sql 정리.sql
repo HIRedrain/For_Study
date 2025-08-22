@@ -1,6 +1,8 @@
 # SQLD 공부 겸 실습 간략 정리
 # HIRedrain
 # 작성 : 2025.08.20
+# 수정
+# 2025.8.22. table 이름 단수 n
 
 # 사전 설정
 
@@ -187,16 +189,16 @@ with high_salary as (select ename, sal from emp where sal > 2000), low_salary as
 
 # outer join : 기준이 되는 한쪽은 매칭되는 값이 없어도 출력됨
 ## 동일한 값 x => null 출력
-# 예시 students => (student_id, name, major_id) : (1, 철수, 101), (2, 영희, 102), (3, 민수, null)
-# 예시 majors => (major_id, major_name) : (101, 컴공), (103, 정통)
+# 예시 student => (student_id, name, major_id) : (1, 철수, 101), (2, 영희, 102), (3, 민수, null)
+# 예시 major => (major_id, major_name) : (101, 컴공), (103, 정통)
 # left : from 뒤에 오는 테이블 기준 - 해당 테이블의 모든 행 무조건 포함
 # right : join 뒤에 오는 테이블 기준 - 해당 테이블의 모든 행 무조건 포함
-# select s.name, m.major_name from students s left outer join majors m on s.major_id = m.major_id; # students : 왼쪽, majors 오른쪽 => 왼쪽 기준 join => majors 테이블과 연결되는 값 있으면 붙이고, 아니면 majors 쪽 칼럼 null (즉, m.major_name 의 값이 null 처리)
-## 결과 : (name, major_name) : (철수, 컴공), (영희, null : 102에 대한 과목 정보가 majors 에 없음 => null), (민수, null : 민수는 major_id 값이 null 이었음) // 모든 학생 포함됨
-## 연결된다 : on s.major_id = m.major_id; 여기서 s.major_id 와 m.major_id 의 값이 같은 행끼리 연결 => 철수와 컴공이 연결됨, s.majors 에 해당하는 값이 m.major_id 에 없으면 연결 x => null
-# select s.name, m.major_name from students s right outer join majors m on s.major_id = m.major_id; # major 기준 join => students 테이블과 연결되는 값 있으면 붙이고, 아니면 students 쪽 칼럼 null (즉, s.name 의 값이 null)
+# select s.name, m.major_name from student s left outer join major m on s.major_id = m.major_id; # student : 왼쪽, major 오른쪽 => 왼쪽 기준 join => major 테이블과 연결되는 값 있으면 붙이고, 아니면 major 쪽 칼럼 null (즉, m.major_name 의 값이 null 처리)
+## 결과 : (name, major_name) : (철수, 컴공), (영희, null : 102에 대한 과목 정보가 major 에 없음 => null), (민수, null : 민수는 major_id 값이 null 이었음) // 모든 학생 포함됨
+## 연결된다 : on s.major_id = m.major_id; 여기서 s.major_id 와 m.major_id 의 값이 같은 행끼리 연결 => 철수와 컴공이 연결됨, s.major 에 해당하는 값이 m.major_id 에 없으면 연결 x => null
+# select s.name, m.major_name from student s right outer join major m on s.major_id = m.major_id; # major 기준 join => student 테이블과 연결되는 값 있으면 붙이고, 아니면 student 쪽 칼럼 null (즉, s.name 의 값이 null)
 ## 결과 : (name, major_name) : (철수, 컴공), (null, 정통) // 모든 전공 포함됨
-# select s.name, m.major_name from students s full outer join majors m on s.major_id = m.major_id; # 전부 연결
+# select s.name, m.major_name from student s full outer join major m on s.major_id = m.major_id; # 전부 연결
 ## 결과 : (name, major_name) : (철수, 컴공), (영희, null), (민수, null), (null, 정통)
 ## 양쪽 모든 행이 포함되어야 함
 
@@ -212,19 +214,19 @@ with high_salary as (select ename, sal from emp where sal > 2000), low_salary as
 # 서브 쿼리 (sub query)
 # select : 스칼라 서브 쿼리
 ## 성능 매우 불리
-# select name as 학생_이름, (select major_name from majors m where m.major_id = s.major_id) as 학과명 from students s;
+# select name as 학생_이름, (select major_name from major m where m.major_id = s.major_id) as 학과명 from student s;
 
 # from : 인라인뷰, 동적 뷰
 ## sql 핵심 
-# select s.name as 학생_이름, m.major_name as 학과명 from students s, (select major_name, major_id from major) m where s.major_id = m.major_id;
-# select * from (select major_id, count(*) cnt from students group by major_id);
+# select s.name as 학생_이름, m.major_name as 학과명 from student s, (select major_name, major_id from major) m where s.major_id = m.major_id;
+# select * from (select major_id, count(*) cnt from student group by major_id);
 
 # where : 중첩 서브 쿼리, 서브 쿼리
 # exists, not exists : 서브 쿼리의 결과가 존재 => 메인 쿼리의 결과가 출력됨
 ## on 사용 불가
-# select * from students s where exists (select 1 from majors m where m.major_id = s.major_id); # 1 대신 문자나 다른 숫자 넣어도 됨 : exists 는 존재하는지 아닌지만 판단함 => m.major_id = s.major_id 존재 => true, 존재 x => false
+# select * from student s where exists (select 1 from major m where m.major_id = s.major_id); # 1 대신 문자나 다른 숫자 넣어도 됨 : exists 는 존재하는지 아닌지만 판단함 => m.major_id = s.major_id 존재 => true, 존재 x => false
 ## 결과 : (name, major_id) : (철수, 101) // true 나온 튜플만 출력함
-# select * from students s where not exists (select 1 from majors m where m.major_id = s.major_id); # m.major_id = s.major_id 존재 x => true, 존재 o => false
+# select * from student s where not exists (select 1 from major m where m.major_id = s.major_id); # m.major_id = s.major_id 존재 x => true, 존재 o => false
 ## 결과 : (name, major_id) : (영희, 102), (철수, null) 
 
 # 등가 조인 : a.id = b.id // 정확히 일치하는 값 연결
@@ -232,9 +234,9 @@ with high_salary as (select ename, sal from emp where sal > 2000), low_salary as
 
 # 비등가 조인 : 조인할 때 무조건 등가 조인? x
 ## 특정 범위나 같지 않다는 조건으로도 조인 가능
-# 예시 students : (name, score) : (철수, 85), (영희, 72), (민수, 90)
-# 예시 majors : (major_name, min_score, max_score) : (컴공, 80, 100), (정통, 70, 79)
-# select s.name, s.score, m.major_name from students s join majors m on s.score between m.min_score and m.max_score;
+# 예시 student : (name, score) : (철수, 85), (영희, 72), (민수, 90)
+# 예시 major : (major_name, min_score, max_score) : (컴공, 80, 100), (정통, 70, 79)
+# select s.name, s.score, m.major_name from student s join major m on s.score between m.min_score and m.max_score;
 ## 결과 : (name, score, major_name) : (철수, 85, 컴공), (영희, 72, 정통), (민수, 90, 컴공)
 ## 조건 : on s.score between m.min_score and m.max_score => 이거 만족하면 연결됨 => 철수, 민수는 80 <= score <= 100 이므로 컴공, 영희는 70 <= score <= 79 이므로 정통
 ## 참고 : between a and b => [a, b] 닫힌 구간
