@@ -26,10 +26,12 @@ class SkipListTest {
         val skipList: SkipList<String> = SkipList("SkipList_str")
         val strArray = arrayOf("C", "A", "E", "B", "R", "D", "V", "L", "T")
         for (str in strArray) {
-            print("adding $str => ")
+//            print("adding $str => ")
             skipList.add(str)
             println("$skipList")
         }
+
+        println(skipList)
 
         val testArray = arrayOf("T", "A", "N")
         for (str in testArray) {
@@ -40,6 +42,18 @@ class SkipListTest {
                 println("Searching %s from %s => does not contain".format(str, skipList.getName()))
             }
         }
+
+
+        for (str in strArray) {
+            if (skipList.contains(str)) {
+                println("Searching %s from %s => contains".format(str, skipList.getName()))
+            }
+            else {
+                println("Searching %s from %s => does not contain".format(str, skipList.getName()))
+            }
+        }
+
+
 
         for (str in strArray) {
             print("removing (%s) from SkipList<String> => ".format(str))
