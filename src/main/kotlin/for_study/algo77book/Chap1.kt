@@ -10,6 +10,7 @@
 * ========================================================
 * 2025.09.26  최초 작성 : a01 작성
 * 2025.09.27  a02 작성, a01 수정
+* 2025.09.27  a03 작성
 * ========================================================
 */
 
@@ -112,6 +113,57 @@ class Chap1 {
         val after = System.nanoTime()
         val a02Time = (after - before) / 1000000 // ns -> ms
         println("출력 시간 : $a02Time ms")
+
+        return answer
+    }
+
+
+
+    // A03. 완전 탐색 (2) - 실행 시간 제한 1초, 난이도 별 하나
+    // 빨간 카드 N 장, 각 카드에는 정수 P1, P2, ... PN 이 적혀 있다.
+    // 파란 카드 N 장, 각 카드에는 정수 Q1, Q2, ... QN 이 적혀 있다.
+    // 경진 씨는 빨간 카드 중에서 1장, 파란 카드 중에서 1장, 총 2장의 카드를 선택함. 이때 카드에 적힌 정수의 합계가 K가 되도록 하는 방법이 존재하는지 확인하시오.
+    // 입력 : N K \n P1, P2, ..., PN \n Q1, Q2, ..., QN
+    // 출력 : Yes (가능), No (불가능)
+    // 제약 : 1 <= N, K, P1, ..., PN, O1, ..., ON <= 100, 정수
+    fun a03(): Boolean {
+        val before = System.nanoTime()
+        var input = readln()
+        var numStr = input.split(" ")
+        val NK = numStr.map { it.toInt() }
+        val K = NK[1]
+
+        input = readln()
+        numStr = input.split(" ")
+        val redPList = numStr.map { it.toInt() }
+
+        input = readln()
+        numStr = input.split(" ")
+        val blueQList = numStr.map { it.toInt() }
+
+        println("입력 값 (N K) : ${NK[0]} $K")
+        println("입력 값 (P1, ..., PN) : $redPList")
+        println("입력 값 (Q1, ..., QN) : $blueQList")
+
+        var answer: Boolean = false
+        for (r in redPList) {
+            for (b in blueQList) {
+                if ((r + b) == K) {
+                    answer = true
+                    println("Yes")
+
+                    break
+                }
+            }
+        }
+
+        if (!answer) {
+            println("No")
+        }
+
+        val after = System.nanoTime()
+        val a03Time = (after - before) / 1000000 // ns -> ms
+        println("실행 시간 : $a03Time ms")
 
         return answer
     }
