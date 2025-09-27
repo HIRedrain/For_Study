@@ -10,14 +10,12 @@
 * ========================================================
 * 2025.09.26  최초 작성 : a01 작성
 * 2025.09.27  a02 작성, a01 수정
-* 2025.09.27  a03 작성
+* 2025.09.27  a03, a04 작성
 * ========================================================
 */
 
 
 package for_study.algo77book
-
-import kotlin.math.pow
 
 
 class Chap1 {
@@ -167,6 +165,42 @@ class Chap1 {
 
         return answer
     }
+
+
+
+    // A04. 2진법 - 실행 시간 제한 1초, 난이도 별 둘
+    // 정수 N 10진수 표기로 주어짐. N 을 2진법으로 변환한 값을 출력하는 프로그램을 작성하십시오.
+    // 입력 : N
+    // 출력 : 2진법으로 변환한 값을 10자리로 출력, 자릿수 부족하면 왼쪽을 0으로 채우시오.
+    // 제약 : 1 <= N <= 100, N 은 정수
+    fun a04(): String {
+        val before = System.nanoTime()
+        var N = readln().toInt()
+        println("입력 값 (N) : $N")
+
+        var binary: String = "" // 2진법 기록할 변수
+        while (N > 0) {
+            val binaryMod = N % 2
+            binary = binaryMod.toString() + binary
+
+            N /= 2 // N = N / 2
+        }
+
+        if (binary.length < 10) {
+            binary = "0".repeat(10 - binary.length) + binary
+        }
+
+        println(binary)
+
+        val after = System.nanoTime()
+        val a04Time = (after - before) / 1000000 // ns -> ms
+        println("실행 시간 : $a04Time ms")
+
+        return binary
+    }
+
+
+
 
 
 
