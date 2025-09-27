@@ -10,6 +10,7 @@
 * ========================================================
 * 2025.09.26  최초 작성 : a01 테스트 코드 작성
 * 2025.09.27  a01, a02 테스트 코드 작성
+* 2025.09.27  a03 테스트 코드 작성
 * ========================================================
 */
 
@@ -75,6 +76,7 @@ class Chap1Test {
     }
 
 
+
     @Test
     @DisplayName("A02 - X 포함")
     fun a02true() {
@@ -118,6 +120,42 @@ class Chap1Test {
 
         // when
         val result = chap1.a02()
+
+        // then
+        assertEquals(expected, result)
+    }
+
+
+
+    @Test
+    @DisplayName("A03 - 카드 합계 K 가능")
+    fun a03true() {
+        // given
+        val input = "7 43\n3 9 20 29 39 43 85\n5 1 7 12 14 11 91"
+        System.setIn(ByteArrayInputStream(input.toByteArray()))
+
+        // 예상 값
+        val expected = true
+
+        // when
+        val result = chap1.a03()
+
+        // then
+        assertEquals(expected, result)
+    }
+
+    @Test
+    @DisplayName("A03 - 카드 합계 K 불가능")
+    fun a03false() {
+        // given
+        val input = "7 91\n3 9 20 29 39 85\n92 93 94 95 96 97 98"
+        System.setIn(ByteArrayInputStream(input.toByteArray()))
+
+        // 예상 값
+        val expected = false
+
+        // when
+        val result = chap1.a03()
 
         // then
         assertEquals(expected, result)
