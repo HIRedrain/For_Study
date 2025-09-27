@@ -12,6 +12,7 @@
 * 2025.09.27  a01, a02 테스트 코드 작성
 * 2025.09.27  a03, a04 테스트 코드 작성
 * 2025.09.27  a04Back() 테스트 코드 작성
+* 2025.09.27  a05() 관련 테스트 코드 작성
 * ========================================================
 */
 
@@ -193,6 +194,63 @@ class Chap1Test {
 
         // when
         val result = chap1.a04Back()
+
+        // then
+        assertEquals(expected, result)
+    }
+
+
+
+    @Test
+    @DisplayName("A05 - 경우의 수 3000 9000")
+    fun a05_1() {
+        // given
+        val input = "3000 9000"
+        System.setIn(ByteArrayInputStream(input.toByteArray()))
+
+        // 예상 값
+        val expected = 1
+
+        // when
+        val result = chap1.a05()
+
+        // then
+        assertEquals(expected, result)
+    }
+
+    @Test
+    @DisplayName("A05 - 경우의 수 2900 8900")
+    fun a05_2() {
+        // given
+        val input = "2900 8900"
+        System.setIn(ByteArrayInputStream(input.toByteArray()))
+
+        // 예상 값
+        val expected = 0
+
+        // when
+        val result = chap1.a05()
+
+        // then
+        assertEquals(expected, result)
+    }
+
+    @Test
+    @DisplayName("A05 - 경우의 수 3000 4000")
+    fun a05_3() {
+        // given
+        val input = "3000 4000"
+        System.setIn(ByteArrayInputStream(input.toByteArray()))
+
+        // 예상 값
+        val expected = 6498498
+
+        // when
+        val before = System.nanoTime()
+        val result = chap1.a05()
+        val after = System.nanoTime()
+        val a05Time = (after - before) / 1000000 // ns -> ms
+        println("실행 시간 : $a05Time ms")
 
         // then
         assertEquals(expected, result)
