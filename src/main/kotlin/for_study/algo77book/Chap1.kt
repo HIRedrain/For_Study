@@ -12,6 +12,7 @@
 * 2025.09.27  a02 작성, a01 수정
 * 2025.09.27  a03, a04 작성
 * 2025.09.27  a04Back : 이진수 -> 십진수
+* 2025.09.27  a05 작성
 * ========================================================
 */
 
@@ -33,17 +34,14 @@ class Chap1 {
         println("입력 값 : $N")
         if (N == null) {
             println("입력 값 == null")
-        }
-        else if ((N > 0) && (N < 101)) {
+        } else if ((N > 0) && (N < 101)) {
             println("정사각형 한 변의 길이 : $N, 넓이 : ${N * N}")
-        }
-        else {
+        } else {
             println("제약 조건 충족 x")
         }
         val after = System.nanoTime()
         val a01Time = (after - before) / 1000000 // ns -> ms
         println("출력 시간 : $a01Time ms")
-
 
 
         // 테스트 코드용~
@@ -71,7 +69,6 @@ class Chap1 {
 
         return result
     }
-
 
 
     // A02. 완전 탐색 (1) - 실행 시간 제한 1초, 난이도 별 하나
@@ -115,7 +112,6 @@ class Chap1 {
 
         return answer
     }
-
 
 
     // A03. 완전 탐색 (2) - 실행 시간 제한 1초, 난이도 별 하나
@@ -166,7 +162,6 @@ class Chap1 {
 
         return answer
     }
-
 
 
     // A04. 2진법 - 실행 시간 제한 1초, 난이도 별 둘
@@ -226,10 +221,60 @@ class Chap1 {
     }
 
 
+    // A05. 도전 문제 - 실행 시간 제한 1초, 난이도 별 둘
+    // 빨간색, 파란색, 흰색 카드 각 1장씩 총 3장 있음. 각 카드에 1 이상 N 이하 정수를 적음.
+    // 카드 3장에 적힌 숫자의 합계가 K 가 되는 방법은 몇 가지?
+    // 입력 : N K
+    // 출력 : 정수로 출력
+    // 제약 : 1 <= N <= 3000, 3 <= K <= 9000, N, K 는 정수
+    fun a05(): Int {
+        val before = System.nanoTime()
+        val NK = readln().split(" ").map { it.toInt() }
+        val N: Int = NK[0]
+        val K: Int = NK[1]
+        println("입력 값 (N K) : $N, $K")
 
+        // 1 <= r, b, w <= N
+        var count = 0
+        for (r in 1 until N + 1) {
+            if (r >= K) {
+                break
+            }
 
+            for (b in 1 until N + 1) {
+                val sumRB = r + b
+                if ((b >= K) || (sumRB >= K)) {
+                    break
+                }
 
+                // 저효율 알고리즘 - 완전 탐색 O(N^3)
+//                for (w in 1 until N + 1) {
+//                    val sum = r + b + w
+//                    if (sum == K) {
+//                        // println("r : $r, b : $b, w : $w, sum : $sum, K : $K")
+//                        count++
+//                    } else if (sum > K) {
+//                        break
+//                    }
+//                }
 
+                // r, b 값 정해지면 K 를 위한 w 값 확정
+                // 이때 w 값이 존재하면? count++
+                if ((1 <= (K - sumRB)) && ((K - sumRB) <= N)) {
+                    count++
+                }
+            }
+        }
 
+        println(count)
+
+        val after = System.nanoTime()
+        val a04Time = (after - before) / 1000000 // ns -> ms
+        println("실행 시간 : $a04Time ms")
+
+        return count
+    }
 
 }
+
+
