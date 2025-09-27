@@ -11,6 +11,7 @@
 * 2025.09.26  최초 작성 : a01 테스트 코드 작성
 * 2025.09.27  a01, a02 테스트 코드 작성
 * 2025.09.27  a03, a04 테스트 코드 작성
+* 2025.09.27  a04Back() 테스트 코드 작성
 * ========================================================
 */
 
@@ -175,6 +176,23 @@ class Chap1Test {
 
         // when
         val result = chap1.a04()
+
+        // then
+        assertEquals(expected, result)
+    }
+
+    @Test
+    @DisplayName("A04 - 십진수 출력")
+    fun a04Back() {
+        // given
+        val input = "00101011"
+        System.setIn(ByteArrayInputStream(input.toByteArray()))
+
+        // 예상 값
+        val expected: Int = 43
+
+        // when
+        val result = chap1.a04Back()
 
         // then
         assertEquals(expected, result)
