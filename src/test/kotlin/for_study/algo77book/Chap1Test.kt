@@ -10,7 +10,7 @@
 * ========================================================
 * 2025.09.26  최초 작성 : a01 테스트 코드 작성
 * 2025.09.27  a01, a02 테스트 코드 작성
-* 2025.09.27  a03 테스트 코드 작성
+* 2025.09.27  a03, a04 테스트 코드 작성
 * ========================================================
 */
 
@@ -156,6 +156,25 @@ class Chap1Test {
 
         // when
         val result = chap1.a03()
+
+        // then
+        assertEquals(expected, result)
+    }
+
+
+
+    @Test
+    @DisplayName("A04 - 이진수 출력")
+    fun a04() {
+        // given
+        val input = "43"
+        System.setIn(ByteArrayInputStream(input.toByteArray()))
+
+        // 예상 값
+        val expected = "0000101011"
+
+        // when
+        val result = chap1.a04()
 
         // then
         assertEquals(expected, result)
