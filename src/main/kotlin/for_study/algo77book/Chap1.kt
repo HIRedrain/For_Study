@@ -11,6 +11,7 @@
 * 2025.09.26  최초 작성 : a01 작성
 * 2025.09.27  a02 작성, a01 수정
 * 2025.09.27  a03, a04 작성
+* 2025.09.27  a04Back : 이진수 -> 십진수
 * ========================================================
 */
 
@@ -196,7 +197,32 @@ class Chap1 {
         val a04Time = (after - before) / 1000000 // ns -> ms
         println("실행 시간 : $a04Time ms")
 
+        // 이진수 문자열을 정수로 변환할 때
+        //val binaryInt = binary.toInt(2)
+        //println("binaryInt : $binaryInt")
+
         return binary
+    }
+
+    // 응용. 2진수 -> 10진수 : 이때 이진수 8자리 이내
+    fun a04Back(): Int {
+        val binary = readln()
+        var binaryCopy = binary
+        var decimal = 0
+        var cal = 1
+        for (i in 0 until 8) {
+            // Char.toInt() : deprecated (더 이상 사용 x - 문자 코드를 숫자로 바꾸라는 건지, 해당 문자를 숫자로 변환하라는 건지 혼란 유발)
+            // => 문자 코드 : Char.code(), 숫자 : Char.digitToInt()
+            val num = binaryCopy.last().digitToInt()
+            decimal += num * cal
+            cal *= 2
+
+            // String.dropLast(끝에서 N 글자) : 이거 해당 문자열의 끝에서 N 글자 제거한 걸 반환함 => 따로 저장 안 하면 기존 문자열 변화 x : 코틀린 - 문자열 불변
+            binaryCopy = binaryCopy.dropLast(1)
+        }
+        println("입력 값 : $binary, 10진수 : $decimal, 계산 후 입력 값 : $binaryCopy")
+
+        return decimal
     }
 
 
