@@ -9,6 +9,7 @@
 * 날짜        수정 / 보완 내용
 * ========================================================
 * 2025.09.26  최초 작성 : a01 테스트 코드 작성
+* 2025.09.27  a01, a02 테스트 코드 작성
 * ========================================================
 */
 
@@ -17,6 +18,7 @@ package for_study.algo77book
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import java.io.ByteArrayInputStream
 
@@ -24,8 +26,9 @@ class Chap1Test {
     val chap1 = Chap1()
 
     @Test
-    @DisplayName("A01 - 정사각형 넓이 출력")
-    fun a01() {
+    @DisplayName("A01_ - 정사각형 넓이 출력")
+    @Disabled
+    fun a01_() {
         // given
         val n1 = 1
 //        val n2 = 2
@@ -42,7 +45,7 @@ class Chap1Test {
 //        val expected4 = n4 * n4
 
         // when
-        val result1 = chap1.a01(n1)
+        val result1 = chap1.a01_(n1)
 //        val result2 = chap1.a01(n2)
 //        val result3 = chap1.a01(n3)
 //        val result4 = chap1.a01(n4)
@@ -52,5 +55,71 @@ class Chap1Test {
 //        assertEquals(expected2, result2)
 //        assertEquals(expected3, result3)
 //        assertEquals(expected4, result4)
+    }
+
+    @Test
+    @DisplayName("A01 - 정사각형 넓이 출력")
+    fun a01() {
+        // given
+        val input = "5"
+        System.setIn(ByteArrayInputStream(input.toByteArray()))
+
+        // 예상 값
+        val expected = 5 * 5
+
+        // when
+        val result = chap1.a01()
+
+        // then
+        assertEquals(expected, result)
+    }
+
+
+    @Test
+    @DisplayName("A02 - X 포함")
+    fun a02true() {
+        // given
+        val input = "5 29\n3 9 20 29 43"
+        System.setIn(ByteArrayInputStream(input.toByteArray())) // 표준 입력을 input으로 변경
+
+        // System.setIn(ByteArrayInputStream(input.toByteArray())) : 설명
+        // 1. input.toByteArray() : input 문자열 -> Byte 배열로 변환 : InputStream - 바이트 단위로 데이터 읽음
+        // 2. ByteArrayInputStream() : 앞서 변경한 바이트 배열 기반으로 입력 스트림 (InputStream) 생성 : 내가 원하는 문자열을 입력으로 읽을 수 있게
+        // 3. System.setIn() : JVM 의 표준 입력 (System.in) 을 내가 만든 ByteArrayInputStream 으로 변경
+        // 그 결과, readLine(), readln() 호출 => 키보드로 입력하는 대신 미리 설정해 둔 문자열을 입력으로 읽음
+
+
+        // 예상 값
+        val expected: Boolean = true
+
+        // when
+        val result = chap1.a02()
+
+        // then
+        assertEquals(expected, result)
+    }
+
+    @Test
+    @DisplayName("A02 - X 미포함")
+    fun a02false() {
+        // given
+        val input = "5 12\n3 9 20 29 43"
+        System.setIn(ByteArrayInputStream(input.toByteArray())) // 표준 입력을 input으로 변경
+
+        // System.setIn(ByteArrayInputStream(input.toByteArray())) : 설명
+        // 1. input.toByteArray() : input 문자열 -> Byte 배열로 변환 : InputStream - 바이트 단위로 데이터 읽음
+        // 2. ByteArrayInputStream() : 앞서 변경한 바이트 배열 기반으로 입력 스트림 (InputStream) 생성 : 내가 원하는 문자열을 입력으로 읽을 수 있게
+        // 3. System.setIn() : JVM 의 표준 입력 (System.in) 을 내가 만든 ByteArrayInputStream 으로 변경
+        // 그 결과, readLine(), readln() 호출 => 키보드로 입력하는 대신 미리 설정해 둔 문자열을 입력으로 읽음
+
+
+        // 예상 값
+        val expected: Boolean = false
+
+        // when
+        val result = chap1.a02()
+
+        // then
+        assertEquals(expected, result)
     }
 }
