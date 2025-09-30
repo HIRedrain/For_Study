@@ -8,7 +8,8 @@
 * ========================================================
 * 날짜        수정 / 보완 내용
 * ========================================================
-* 2025.10.01  최초 작성 : a06 작성
+* 2025.10.01  최초 작성 : a06 테스트 함수 작성
+* 2025.10.01  a07 관련 테스트 함수 작성
 * ========================================================
 */
 
@@ -19,6 +20,7 @@ package for_study.algo77book
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import java.io.ByteArrayInputStream
 
@@ -40,6 +42,97 @@ class Chap2Test {
 
         // then
         assertEquals(expected, result)
+
+    }
+
+
+
+    @Test
+    @DisplayName("A07 - 1차원 누적 합 (2) - 8일 5명")
+    fun a07() {
+        // given
+        val input = "8\n5\n2 3\n3 6\n5 7\n3 7\n1 5"
+        System.setIn(ByteArrayInputStream(input.toByteArray()))
+
+        // 예상 값
+        val expected1: ArrayList<Int> = arrayListOf(0, 1, 2, 4, 3, 4, 3, 2, 0)
+        val expected2: ArrayList<Int> = arrayListOf(1, 2, 4, 3, 4, 3, 2, 0)
+
+
+        // when
+        var start = System.nanoTime()
+        val result1 = chap2.a07_1()
+        var after = System.nanoTime()
+        val a07Time_1 = (after - start) / 1000000 // ns -> ms
+
+        System.setIn(ByteArrayInputStream(input.toByteArray())) // given - for _2
+        start = System.nanoTime()
+        val result2 = chap2.a07_2()
+        after = System.nanoTime()
+        val a07Time_2 = (after - start) / 1000000
+
+
+        println("a07_1Time : ${a07Time_1}ms, a07_2Time : ${a07Time_2}ms")
+        println("result1 : $result1") // 0ms
+        println("result2 : $result2}") // 0ms
+
+        // then
+        assertEquals(expected1, result1)
+        assertEquals(expected2, result2)
+    }
+
+    @Test
+    @DisplayName("A07 - 1차원 누적 합 (2) - 1000명 2000명")
+    fun a07_1000_2000() {
+        // given
+        val input = chap2.a07_random_maker(1000, 2000)
+        println(input)
+        System.setIn(ByteArrayInputStream(input.toByteArray()))
+
+        // when
+        var start = System.nanoTime()
+        val result1 = chap2.a07_1()
+        var after = System.nanoTime()
+        val a07Time_1 = (after - start) / 1000000 // ns -> ms
+
+
+        System.setIn(ByteArrayInputStream(input.toByteArray())) // given - for _2
+        start = System.nanoTime()
+        val result2 = chap2.a07_2()
+        after = System.nanoTime()
+        val a07Time_2 = (after - start) / 1000000
+
+
+        println("a07_1Time : ${a07Time_1}ms, a07_2Time : ${a07Time_2}ms")
+        println("result1 : $result1") // 29ms
+        println("result2 : $result2}") // 3ms
+    }
+
+    @Test
+    @DisplayName("A07 - 1차원 누적 합 (2) - 10000명 10000명")
+    fun a07_10000_10000() {
+        // given
+        val input = chap2.a07_random_maker(10000, 10000)
+        System.setIn(ByteArrayInputStream(input.toByteArray()))
+
+        // when
+        var start = System.nanoTime()
+        val result1 = chap2.a07_1()
+        var after = System.nanoTime()
+        val a07Time_1 = (after - start) / 1000000 // ns -> ms
+
+
+        System.setIn(ByteArrayInputStream(input.toByteArray())) // given - for _2
+        start = System.nanoTime()
+        val result2 = chap2.a07_2()
+        after = System.nanoTime()
+        val a07Time_2 = (after - start) / 1000000
+
+
+        println("a07_1Time : ${a07Time_1}ms, a07_2Time : ${a07Time_2}ms")
+        println("result1 : $result1") // 90ms
+        println("result2 : $result2}") // 18ms
+
 
     }
 }
