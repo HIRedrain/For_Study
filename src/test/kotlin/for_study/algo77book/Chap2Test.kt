@@ -10,6 +10,7 @@
 * ========================================================
 * 2025.10.01  최초 작성 : a06 테스트 함수 작성
 * 2025.10.01  a07 관련 테스트 함수 작성
+* 2025.10.01  a08
 * ========================================================
 */
 
@@ -132,7 +133,24 @@ class Chap2Test {
         println("a07_1Time : ${a07Time_1}ms, a07_2Time : ${a07Time_2}ms")
         println("result1 : $result1") // 90ms
         println("result2 : $result2}") // 18ms
+    }
 
 
+
+    @Test
+    @DisplayName("A08 - 2차원 누적 합 (1)")
+    fun a08() {
+        // given
+        val input = "5 5\n2 0 0 5 1\n1 0 3 0 0\n0 8 5 0 2\n4 1 0 0 6\n0 9 2 7 0\n2\n2 2 4 5\n1 1 5 5"
+        System.setIn(ByteArrayInputStream(input.toByteArray()))
+
+        // 예상 값
+        val expected = arrayListOf(25, 56)
+
+        // when
+        val result = chap2.a08()
+
+        // then
+        assertEquals(expected, result)
     }
 }
