@@ -10,6 +10,7 @@
 * ========================================================
 * 2025.09.30  최초 작성 : a06 작성
 * 2025.10.01  a07 관련 함수 작성
+* 2025.10.01  a08
 * ========================================================
 */
 
@@ -147,6 +148,52 @@ class Chap2 {
             val start = random.nextInt(D) + 1
             val end = random.nextInt(D - start + 1) + start
             answer += "\n$start $end"
+        }
+
+        return answer
+    }
+
+
+
+    // A08. 2차원 누적 합 (1) - 실행 시간 제한 5초, 난이도 별 넷
+    // H x W 칸 있습니다. 위부터 i 번째 행, 왼쪽부터 j 번째 열에 있는 칸 (i, j) 에는 정수 Xij 가 쓰여 있습니다. 질문 Q 개에 대한 답변을 출력하는 프로그램을 작성하시오.
+    // 질문 1 : 왼쪽 위 (A1, B1), 오른쪽 아래 (C1, D1) 로 이뤄진 사각형 영역에 쓰인 정수의 총합은?
+    // 질문 Q : 왼쪽 위 (AQ, BQ), 오른쪽 아래 (CQ, DQ) 로 이뤄진 사각형 영역에 스인 정수의 총합은?
+    // 입력 : H W \n X11 X12 ... X1W \n XH1 XH2 ... XHW \n Q \n A1 B1 C1 D1\n ... \n AQ BQ CQ DQ
+    // 출력 : Q행으로 출력하십시오. i 번째 행에는 질문 i의 답을 출력하십시오.
+    // 제약 : 1 <= H, W <= 1500, 1 <= Q <= 100000, 0 <= Xij <= 9, 1 <= Ai <= Di <= H, 1 <= Bi <= Di <= W
+    fun a08(): ArrayList<Int> { // 조금 느린 애
+        val rHcW = readln().split(" ").map { it.toInt() }
+        val mtrxHW = Array(rHcW[0] + 1) { IntArray(rHcW[1] + 1) } // 2차원 배열 생성 (0, 0) 이 아닌 (1, 1) 부터 시작점을 잡아서 그렇게 쓸 수 있게 만듦
+        for (rh in 1 ..rHcW[0]) { // i in 0 until n : [0, n) , i in 0 .. n : [0, n]
+            var count = 0
+            val input = readln().split(" ").map { it.toInt() }
+            for (cw in 1 .. rHcW[1]) {
+                mtrxHW[rh][cw] = input[count++]
+            }
+        }
+
+        val Q = readln().toInt()
+        val As = ArrayList<Int>() // 기록용
+        val Bs = ArrayList<Int>() // 기록용
+        val Cs = ArrayList<Int>() // 기록용
+        val Ds = ArrayList<Int>() // 기록용
+        val answer = ArrayList<Int>()
+        for (i in 0 until Q) {
+            val input = readln().split(" ").map { it.toInt() }
+            As.add(input[0])
+            Bs.add(input[1])
+            Cs.add(input[2])
+            Ds.add(input[3])
+
+            var sum = 0
+            for (r in As[i] .. Cs[i]) {
+                for (c in Bs[i] .. Ds[i]) {
+                    sum += mtrxHW[r][c]
+                }
+            }
+            println(sum)
+            answer.add(sum)
         }
 
         return answer
