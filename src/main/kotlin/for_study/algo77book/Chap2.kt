@@ -11,6 +11,7 @@
 * 2025.09.30  최초 작성 : a06 작성
 * 2025.10.01  a07 관련 함수 작성
 * 2025.10.01  a08
+* 2025.10.03  a08_answer
 * ========================================================
 */
 
@@ -194,6 +195,60 @@ class Chap2 {
             }
             println(sum)
             answer.add(sum)
+        }
+
+        return answer
+    }
+
+    fun a08_answer(): ArrayList<Int> { // 정답
+        // 2차원 누적 합 배열을 만들어서 저장
+        // 1. 가로로 쭉 더함
+        // 2. 세로로 쭉 더함
+        // 1, 2 를 거치면 누적 합 행렬 생성됨
+        // => 이때 누적 합은 (0, 0) 기준으로 (i, j) 행까지 쭉 더한 것 (사각형)
+        // => (a, b) ~ (c, d) 합 구하려면 (c, d) 값 + (0, 0) 값 - (0, d) 값 - (c, 0) 값
+        // => 일반화 : (a, b) ~ (c, d) 합 구하려면 (c, d) 값 + (a - 1, b - 1) - (a - 1, d) - (c, b - 1)
+        // 이거는 그림으로 이해해야 함
+
+        val rHcW = readln().split(" ").map { it.toInt() }
+        val mtrxHW = Array(rHcW[0] + 1) { IntArray(rHcW[1] + 1) } // 2차원 배열 생성 (0, 0) 이 아닌 (1, 1) 부터 시작점을 잡아서 그렇게 쓸 수 있게 만듦
+        val mtrxPrefixSum = Array(rHcW[0] + 1) { IntArray(rHcW[1] + 1) } // 2차원 누적 합 배열
+        for (rh in 1 ..rHcW[0]) { // i in 0 until n : [0, n) , i in 0 .. n : [0, n]
+            var count = 0
+            var sum = 0
+            val input = readln().split(" ").map { it.toInt() }
+            for (cw in 1 .. rHcW[1]) {
+                mtrxHW[rh][cw] = input[count++]
+                sum += mtrxHW[rh][cw] // 1. 가로 누적 합 계산
+                mtrxPrefixSum[rh][cw] = sum // 기록
+            }
+        }
+
+        // 2. 세로 누적 합
+        for (cw in 1 .. rHcW[1]) {
+            var sum = 0
+            for (rh in 1 .. rHcW[0]) {
+                sum += mtrxPrefixSum[rh][cw]
+                mtrxPrefixSum[rh][cw] = sum
+            }
+        }
+
+        val Q = readln().toInt()
+        val As = ArrayList<Int>()
+        val Bs = ArrayList<Int>()
+        val Cs = ArrayList<Int>()
+        val Ds = ArrayList<Int>()
+        val answer = ArrayList<Int>()
+        for (i in 0 until Q) {
+            val input = readln().split(" ").map { it.toInt() }
+            As.add(input[0])
+            Bs.add(input[1])
+            Cs.add(input[2])
+            Ds.add(input[3])
+
+            val result = mtrxPrefixSum[Cs[i]][Ds[i]] + mtrxPrefixSum[As[i] - 1][Bs[i] - 1] - mtrxPrefixSum[As[i] - 1][Ds[i]] - mtrxPrefixSum[Cs[i]][Bs[i] - 1]
+            answer.add(result)
+            println(result)
         }
 
         return answer
