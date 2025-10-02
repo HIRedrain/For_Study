@@ -11,6 +11,7 @@
 * 2025.10.01  최초 작성 : a06 테스트 함수 작성
 * 2025.10.01  a07 관련 테스트 함수 작성
 * 2025.10.01  a08
+* 2025.10.03  a08_answer
 * ========================================================
 */
 
@@ -138,7 +139,7 @@ class Chap2Test {
 
 
     @Test
-    @DisplayName("A08 - 2차원 누적 합 (1)")
+    @DisplayName("A08 - 2차원 누적 합 (1) - 내 것")
     fun a08() {
         // given
         val input = "5 5\n2 0 0 5 1\n1 0 3 0 0\n0 8 5 0 2\n4 1 0 0 6\n0 9 2 7 0\n2\n2 2 4 5\n1 1 5 5"
@@ -153,4 +154,23 @@ class Chap2Test {
         // then
         assertEquals(expected, result)
     }
+
+    @Test
+    @DisplayName("A08 - 2차원 누적 합 (1) - 정답")
+    fun a08_answer() {
+        // given
+        val input = "5 5\n2 0 0 5 1\n1 0 3 0 0\n0 8 5 0 2\n4 1 0 0 6\n0 9 2 7 0\n2\n2 2 4 5\n1 1 5 5"
+        System.setIn(ByteArrayInputStream(input.toByteArray()))
+
+        // 예상 값
+        val expected = arrayListOf(25, 56)
+
+        // when
+        val result = chap2.a08_answer()
+
+        // then
+        assertEquals(expected, result)
+    }
+
+
 }
