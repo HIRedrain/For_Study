@@ -19,6 +19,7 @@
 :calendar:  📅   schedule    일정 작성 or 수정
 
 :frame_with_picture:    🖼️  picture jpg, png 등 첨부
+=> 코드 안 먹히는 듯 - 그냥 이모지로 바로 사용하기
 
 :call_me_hand:  🤙   convention  컨벤션 작성 or 수정
 
