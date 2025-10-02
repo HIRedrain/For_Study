@@ -17,4 +17,8 @@
 :wrench:	🔧	edit	.yml, .properties 파일 변경
 
 :calendar:  📅   schedule    일정 작성 or 수정
+
+:frame_with_picture:    🖼️  picture jpg, png 등 첨부
+
 :call_me_hand:  🤙   convention  컨벤션 작성 or 수정
+
