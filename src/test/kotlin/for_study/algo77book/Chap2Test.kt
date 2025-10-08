@@ -12,6 +12,7 @@
 * 2025.10.01  a07 관련 테스트 함수 작성
 * 2025.10.01  a08
 * 2025.10.03  a08_answer
+* 2025.10.08  a09
 * ========================================================
 */
 
@@ -170,6 +171,35 @@ class Chap2Test {
 
         // then
         assertEquals(expected, result)
+    }
+
+
+
+    @Test
+    @DisplayName("A09 - 2차원 누적 합 (2)")
+    fun a09() {
+        // given
+        val input = "5 5 2\n1 1 3 3\n2 2 4 4"
+        System.setIn(ByteArrayInputStream(input.toByteArray()))
+
+        // 예상 값
+        val expected = arrayOf(
+            intArrayOf(0, 0, 0, 0, 0, 0),
+            intArrayOf(0, 1, 1, 1, 0, 0),
+            intArrayOf(0, 1, 2, 2, 1, 0),
+            intArrayOf(0, 1, 2, 2, 1, 0),
+            intArrayOf(0, 0, 1, 1, 1, 0),
+            intArrayOf(0, 0, 0, 0, 0, 0)
+        )
+
+        // when
+        val result = chap2.a09()
+
+        // then
+        // assertEquals() 사용 시 참조 값이 달라서 테스트 실패 : 코틀린 - Array<IntArray> : 참조 기반 => 내부 값 일치해도 객체 참조 다를 시 실패
+        // => 중첩 배열 시 contentDeepEquals 사용하여 내부 값 비교
+        assertTrue(expected.contentDeepEquals(result))
+
     }
 
 
