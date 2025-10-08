@@ -12,6 +12,7 @@
 * 2025.10.01  a07 관련 함수 작성
 * 2025.10.01  a08
 * 2025.10.03  a08_answer
+* 2025.10.08  a09
 * ========================================================
 */
 
@@ -249,6 +250,75 @@ class Chap2 {
             val result = mtrxPrefixSum[Cs[i]][Ds[i]] + mtrxPrefixSum[As[i] - 1][Bs[i] - 1] - mtrxPrefixSum[As[i] - 1][Ds[i]] - mtrxPrefixSum[Cs[i]][Bs[i] - 1]
             answer.add(result)
             println(result)
+        }
+
+        return answer
+    }
+
+
+
+    // A09. 2차원 누적 합 (2) - 실행 시간 제한 5초, 난이도 별 넷
+    // H x W 매트릭스 - 처음에는 모든 칸에 눈 안 쌓였으나 N 일 동안 눈이 내릴 예정
+    // 위부터 i 번째 행, 왼쪽부터 j 번째 열 (i, j)
+    // t 일차에는 칸 (At, Bt)를 왼쪽 위로 하고, 칸 (Ct, Dt) 를 오른쪽 아래로 하는 사각형 영역에 적설량이 1cm 증가할 것으로 예상됩니다.
+    // 최종적인 각 칸의 적설량을 출력하는 프로그램을 작성하시오.
+    // 입력 : H W N \n A1 B1 C1 D1 \n ... \n AN BN CN DN
+    // 출력 : Z11 Z12 ... Z1W \n ... \n ZH1 ... ZHW
+    // 제약 : 1 <= H, W <= 1500 / 1 <= N <= 100000 / 1 <= At <= Ct <= H / 1 <= Bt <= Dt <= W
+    fun a09(): Array<IntArray> {
+        val rHcWN = readln().split(" ").map { it.toInt() }
+        val N = rHcWN[2]
+
+        val As = ArrayList<Int> ()
+        val Bs = ArrayList<Int> ()
+        val Cs = ArrayList<Int> ()
+        val Ds = ArrayList<Int> ()
+        for (i in 0 until N) {
+            val input = readln().split(" ").map { it.toInt() }
+            As.add(input[0])
+            Bs.add(input[1])
+            Cs.add(input[2])
+            Ds.add(input[3])
+        }
+
+        val check = Array(rHcWN[0] + 1) { IntArray(rHcWN[1] + 1) }
+        for (i in 0 until N) {
+            check[As[i]][Bs[i]] += 1
+
+            if (Ds[i] < rHcWN[1]) {
+                // d열이 제일 마지막 열이 아닐 때
+                check[As[i]][Ds[i] + 1] -= 1
+            }
+
+            if (Cs[i] < rHcWN[0]) {
+                // c행이 제일 마지막 행이 아닐 때
+                if (Ds[i] < rHcWN[1]) {
+                    // d열이 제일 마지막 열이 아닐 때
+                    check[Cs[i] +1][Ds[i] + 1] += 1
+                }
+
+                check[Cs[i] + 1][Bs[i]] -= 1
+            }
+        }
+
+        val answer = Array(rHcWN[0] + 1) { IntArray(rHcWN[1] + 1) }
+        for (r in 1 .. rHcWN[0]) { // 가로 누적 합
+            var sum = 0
+            for (c in 1 .. rHcWN[1]) {
+                sum += check[r][c]
+                answer[r][c] = sum
+            }
+        }
+
+        for (c in 1 .. rHcWN[1]) { // 세로 누적 합
+            var str = ""
+            var sum = 0
+            for (r in 1 .. rHcWN[0]) {
+                sum += answer[r][c]
+                answer[r][c] = sum
+                str += "${answer[r][c]} "
+            }
+            println(str)
         }
 
         return answer
